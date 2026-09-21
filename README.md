@@ -24,6 +24,7 @@ M0 完成：项目骨架可构建，入口类与注册中枢就位，开发与�
 - 内容由作者定义，开发方不自行设计设定。
 - 规则与协作方式见 [docs/DESIGN.md](docs/DESIGN.md)
 - 设定登记表见 [docs/LORE_INTAKE.md](docs/LORE_INTAKE.md)
+- 配方写法标准见 [docs/RECIPE_SPEC.md](docs/RECIPE_SPEC.md)（配方登记在 [docs/RECIPES.md](docs/RECIPES.md)）
 - 运行/测试方式见 [docs/DEV_LOOP.md](docs/DEV_LOOP.md)
 - 环境与镜像配置见 [docs/SETUP.md](docs/SETUP.md)
 
