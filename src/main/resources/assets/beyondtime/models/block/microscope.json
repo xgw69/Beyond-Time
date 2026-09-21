@@ -20,7 +20,7 @@
     },
     {
       "from": [3, 5, 3],
-      "to": [11, 6, 10],
+      "to": [11, 6, 13],
       "faces": {
         "down": { "texture": "#body" },
         "up": { "texture": "#body" },

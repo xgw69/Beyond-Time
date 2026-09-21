@@ -15,7 +15,7 @@
 | # | 零件 | from（起点） | to（终点） | 贴图 |
 |---|---|---|---|---|
 | 1 | 底座 | `1, 0, 1` | `15, 3, 15` | `#body` |
-| 2 | 载物台 | `3, 5, 3` | `11, 6, 10` | `#body` |
+| 2 | 载物台 | `3, 5, 3` | `11, 6, 13` | `#body` |
 | 3 | 立柱（后方） | `10, 3, 11` | `14, 16, 15` | `#body` |
 | 4 | 横臂 | `5, 13, 5` | `14, 15, 15` | `#body` |
 | 5 | 镜筒（含目镜） | `6, 9, 6` | `8, 16, 8` | `#glass` |
@@ -28,7 +28,7 @@
 ```java
 Shapes.or(
         Block.box(1.0, 0.0, 1.0, 15.0, 3.0, 15.0),    // 底座
-        Block.box(3.0, 5.0, 3.0, 11.0, 6.0, 10.0),    // 载物台
+        Block.box(3.0, 5.0, 3.0, 11.0, 6.0, 13.0),    // 载物台
         Block.box(10.0, 3.0, 11.0, 14.0, 16.0, 15.0), // 立柱
         Block.box(5.0, 13.0, 5.0, 14.0, 15.0, 15.0),  // 横臂
         Block.box(6.0, 9.0, 6.0, 8.0, 16.0, 8.0));    // 镜筒
@@ -52,6 +52,14 @@ Shapes.or(
 | `textures/block/*.png` | **F3 + T** |
 | `MicroscopeBlock#NORTH_SHAPE`（Java） | 重开一次 `tools\dev-client.bat` |
 
+**不想开游戏也想先看形状**：`docs/img/microscope-shapes.png` 是三个方案的
+正视 / 侧视 / 俯视对照图（4 像素一格网格，可以直接对着数坐标）。
+改了模型之后跑一下这个就能重新出图：
+
+```powershell
+pwsh -File tools/preview-model.ps1
+```
+
 模型文件是手写的、**不由 datagen 生成**（datagen 只生成 blockstate 指向它），
 所以你可以放心地反复改那个 JSON，F3+T 就能看到新形状。
 
@@ -67,6 +75,9 @@ Shapes.or(
 ---
 
 ## 3. 三套备选外形
+
+对照图：`docs/img/microscope-shapes.png`（由 `tools/preview-model.ps1` 生成）。
+三个方案都保证**零件互相连接**（载物台接在立柱上，镜筒挂在横臂上），不会有悬空的块。
 
 三个方案的模型文件都已经放在 `tools/microscope-variants/`，切换只要两步：
 把 JSON 覆盖过去 + 把 `NORTH_SHAPE` 换成下面那段。覆盖命令（在项目根目录执行）：
@@ -88,7 +99,7 @@ Copy-Item tools\microscope-variants\b_tower.json src\main\resources\assets\beyon
 | # | 零件 | from | to | 贴图 |
 |---|---|---|---|---|
 | 1 | 底座 | `2, 0, 2` | `14, 2, 14` | `#body` |
-| 2 | 载物台 | `3, 5, 3` | `11, 6, 9` | `#body` |
+| 2 | 载物台 | `3, 5, 3` | `11, 6, 12` | `#body` |
 | 3 | 立柱 | `6, 2, 10` | `10, 16, 14` | `#body` |
 | 4 | 横臂 | `4, 12, 4` | `10, 14, 14` | `#body` |
 | 5 | 镜筒 | `5, 8, 5` | `7, 16, 7` | `#glass` |
@@ -96,7 +107,7 @@ Copy-Item tools\microscope-variants\b_tower.json src\main\resources\assets\beyon
 ```java
 Shapes.or(
         Block.box(2.0, 0.0, 2.0, 14.0, 2.0, 14.0),
-        Block.box(3.0, 5.0, 3.0, 11.0, 6.0, 9.0),
+        Block.box(3.0, 5.0, 3.0, 11.0, 6.0, 12.0),
         Block.box(6.0, 2.0, 10.0, 10.0, 16.0, 14.0),
         Block.box(4.0, 12.0, 4.0, 10.0, 14.0, 14.0),
         Block.box(5.0, 8.0, 5.0, 7.0, 16.0, 7.0));
