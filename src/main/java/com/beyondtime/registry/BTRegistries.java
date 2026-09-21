@@ -52,5 +52,17 @@ public final class BTRegistries {
         SOUND_EVENTS.register(modEventBus);
         RECIPE_TYPES.register(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
+
+        // A class is only initialised the first time it is touched, and the deferred entries of a
+        // content class are declared in its static initialiser. Touching every content class here,
+        // while the mod is still being constructed, is therefore what actually fills the registers
+        // above; without it the entries would first be created from a data generator or from a
+        // recipe, long after the registry events have already fired.
+        BTDataComponents.bootstrap();
+        BTBlocks.bootstrap();
+        BTBlockEntities.bootstrap();
+        BTItems.bootstrap();
+        BTMenus.bootstrap();
+        BTCreativeTab.bootstrap();
     }
 }

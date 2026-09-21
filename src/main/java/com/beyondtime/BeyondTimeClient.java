@@ -1,9 +1,14 @@
 package com.beyondtime;
 
+import com.beyondtime.client.screen.MicroscopeScreen;
+import com.beyondtime.registry.BTMenus;
+
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
 /**
  * Client-only entry point.
@@ -15,6 +20,11 @@ import net.neoforged.fml.common.Mod;
 @EventBusSubscriber(modid = BeyondTime.MODID, value = Dist.CLIENT)
 public class BeyondTimeClient {
     public BeyondTimeClient(ModContainer container) {
-        // No client side content yet.
+        // Screens are registered through RegisterMenuScreensEvent below.
+    }
+
+    @SubscribeEvent
+    static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(BTMenus.MICROSCOPE.get(), MicroscopeScreen::new);
     }
 }

@@ -1,5 +1,17 @@
 {
-  "itemGroup.beyondtime.main": "Beyond-Time",
+  "itemGroup.beyondtime": "Beyond-Time",
+
+  "block.beyondtime.microscope": "Microscope",
+  "item.beyondtime.petri_dish": "Petri Dish",
+
+  "container.beyondtime.microscope": "Microscope",
+
+  "item.beyondtime.petri_dish.clean": "Clean",
+  "item.beyondtime.petri_dish.used": "Contains a sample - wash it to reuse",
+  "item.beyondtime.microscope.contains": "Holds: %s",
+
+  "gui.beyondtime.microscope.report_title": "Sample report",
+  "gui.beyondtime.microscope.report_empty": "No data yet",
 
   "beyondtime.configuration.title": "Beyond-Time Configs"
 }

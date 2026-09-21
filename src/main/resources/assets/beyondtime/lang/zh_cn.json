@@ -1,5 +1,17 @@
 {
-  "itemGroup.beyondtime.main": "Beyond-Time",
+  "itemGroup.beyondtime": "Beyond-Time",
+
+  "block.beyondtime.microscope": "显微镜",
+  "item.beyondtime.petri_dish": "培养皿",
+
+  "container.beyondtime.microscope": "显微镜",
+
+  "item.beyondtime.petri_dish.clean": "干净",
+  "item.beyondtime.petri_dish.used": "已采集样本 —— 清洗后可再次使用",
+  "item.beyondtime.microscope.contains": "内含：%s",
+
+  "gui.beyondtime.microscope.report_title": "样本报告",
+  "gui.beyondtime.microscope.report_empty": "暂无数据",
 
   "beyondtime.configuration.title": "Beyond-Time 配置"
 }

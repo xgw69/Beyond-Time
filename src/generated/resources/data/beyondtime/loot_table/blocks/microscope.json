@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name",
+                "beyondtime:contained_dish"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "beyondtime:microscope"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "beyondtime:blocks/microscope"
+}

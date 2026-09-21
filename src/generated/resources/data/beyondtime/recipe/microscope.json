@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "C": "minecraft:copper_ingot",
+    "D": "minecraft:diamond",
+    "G": "minecraft:glass",
+    "I": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    " A ",
+    "GAD",
+    "CIC"
+  ],
+  "result": {
+    "id": "beyondtime:microscope"
+  }
+}
