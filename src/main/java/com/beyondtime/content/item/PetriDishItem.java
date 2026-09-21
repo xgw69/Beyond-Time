@@ -126,21 +126,16 @@ public class PetriDishItem extends Item {
     /**
      * {@return whether the block at {@code pos} can wash a used dish}
      *
-     * <p>Two shapes are accepted, because the exact wording of the rule was ambiguous:
-     * a water cauldron or a lava cauldron, either of them heated from below.
+     * <p>A water cauldron heated from below: a campfire, a soul campfire or a magma block underneath.
+     * Washing uses up one level of water, the way filling a bottle does.
      */
     private static boolean isHeatedWashingStation(Level level, BlockPos pos, BlockState state) {
-        BlockState below = level.getBlockState(pos.below());
-        boolean heated = below.is(Blocks.CAMPFIRE) || below.is(Blocks.SOUL_CAMPFIRE) || below.is(Blocks.MAGMA_BLOCK);
-        if (!heated) {
+        if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0) {
             return false;
         }
 
-        if (state.is(Blocks.LAVA_CAULDRON)) {
-            return true;
-        }
-
-        return state.is(Blocks.WATER_CAULDRON) && state.getValue(LayeredCauldronBlock.LEVEL) > 0;
+        BlockState below = level.getBlockState(pos.below());
+        return below.is(Blocks.CAMPFIRE) || below.is(Blocks.SOUL_CAMPFIRE) || below.is(Blocks.MAGMA_BLOCK);
     }
 
     @Override
