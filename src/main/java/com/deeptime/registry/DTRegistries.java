@@ -1,0 +1,56 @@
+package com.deeptime.registry;
+
+import com.deeptime.DeepTime;
+
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+/**
+ * Every {@link DeferredRegister} of the mod, in one place.
+ *
+ * <p>Registries for world generation (biomes, dimension types, level stems, structures,
+ * features) are added by the world generation step, because they are registered differently
+ * from ordinary content.
+ */
+public final class DTRegistries {
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(DeepTime.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(DeepTime.MODID);
+    public static final DeferredRegister.Entities ENTITY_TYPES = DeferredRegister.createEntities(DeepTime.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, DeepTime.MODID);
+    public static final DeferredRegister<MenuType<?>> MENU_TYPES =
+            DeferredRegister.create(Registries.MENU, DeepTime.MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, DeepTime.MODID);
+    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
+            DeferredRegister.create(Registries.PARTICLE_TYPE, DeepTime.MODID);
+    public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
+            DeferredRegister.create(Registries.SOUND_EVENT, DeepTime.MODID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
+            DeferredRegister.create(Registries.RECIPE_TYPE, DeepTime.MODID);
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS =
+            DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, DeepTime.MODID);
+
+    private DTRegistries() {}
+
+    /** Attaches every registry of the mod to the mod event bus. */
+    public static void register(IEventBus modEventBus) {
+        BLOCKS.register(modEventBus);
+        ITEMS.register(modEventBus);
+        ENTITY_TYPES.register(modEventBus);
+        BLOCK_ENTITY_TYPES.register(modEventBus);
+        MENU_TYPES.register(modEventBus);
+        CREATIVE_TABS.register(modEventBus);
+        PARTICLE_TYPES.register(modEventBus);
+        SOUND_EVENTS.register(modEventBus);
+        RECIPE_TYPES.register(modEventBus);
+        DATA_COMPONENTS.register(modEventBus);
+    }
+}

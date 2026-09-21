@@ -1,0 +1,49 @@
+pluginManagement {
+    repositories {
+        // CERNET mirrors the NeoForged maven, which is otherwise reset from mainland China.
+        maven {
+            name = 'CERNET Mirror (NeoForged)'
+            url = 'https://mirrors.cernet.edu.cn/bmclapi/'
+        }
+        maven {
+            name = 'NeoForged Releases'
+            url = 'https://maven.neoforged.net/releases/'
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+    // Applying the repositories plugin at the settings level stops ModDevGradle from
+    // adding its own repositories at the project level, so the CERNET mirror below is
+    // consulted before maven.neoforged.net.
+    id 'net.neoforged.moddev.repositories' version '2.0.147'
+}
+
+dependencyResolutionManagement {
+    repositories {
+        maven {
+            name = 'CERNET Mirror (NeoForged)'
+            url = 'https://mirrors.cernet.edu.cn/bmclapi/'
+        }
+        maven {
+            name = 'Mojang Minecraft Libraries'
+            url = 'https://libraries.minecraft.net/'
+        }
+        // Not mirrored anywhere, so this one still has to come from NeoForged directly.
+        maven {
+            name = 'Mojang Meta'
+            url = 'https://maven.neoforged.net/mojang-meta/'
+        }
+        maven {
+            name = 'NeoForged Releases'
+            url = 'https://maven.neoforged.net/releases/'
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'deeptime'
