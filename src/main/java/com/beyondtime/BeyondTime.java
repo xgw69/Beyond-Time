@@ -1,8 +1,8 @@
-package com.deeptime;
+package com.beyondtime;
 
 import org.slf4j.Logger;
 
-import com.deeptime.registry.DTRegistries;
+import com.beyondtime.registry.BTRegistries;
 import com.mojang.logging.LogUtils;
 
 import net.neoforged.bus.api.IEventBus;
@@ -14,21 +14,21 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 /**
- * Entry point of Deep Time.
+ * Entry point of Beyond-Time.
  *
- * <p>Deep Time is an archaeology mod about the history of the world: it starts with a
- * microscope and microbial samples, moves on to sequencing and cloning the ancestral forms of
- * living creatures, and ends with machines that travel to the past of each dimension.
+ * <p>Beyond-Time is an archaeology mod about the history of the world. Gameplay, story and
+ * content are specified by the project owner; see {@code docs/DESIGN.md} for the agreed
+ * framework and {@code docs/LORE_INTAKE.md} for the story intake form.
  */
-@Mod(DeepTime.MODID)
-public class DeepTime {
+@Mod(BeyondTime.MODID)
+public class BeyondTime {
     /** The mod id. Must match the {@code mod_id} property and {@code neoforge.mods.toml}. */
-    public static final String MODID = "deeptime";
+    public static final String MODID = "beyondtime";
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public DeepTime(IEventBus modEventBus, ModContainer modContainer) {
-        DTRegistries.register(modEventBus);
+    public BeyondTime(IEventBus modEventBus, ModContainer modContainer) {
+        BTRegistries.register(modEventBus);
 
         modEventBus.addListener(this::onCommonSetup);
 
@@ -37,11 +37,11 @@ public class DeepTime {
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
-        LOGGER.info("Deep Time finished common setup.");
+        LOGGER.info("Beyond-Time finished common setup.");
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("Deep Time is present on the server side.");
+        LOGGER.info("Beyond-Time is present on the server side.");
     }
 }

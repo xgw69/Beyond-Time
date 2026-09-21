@@ -7,7 +7,7 @@ displayName="${mod_name}"
 authors="${mod_authors}"
 
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="deeptime.png"
+#logoFile="beyondtime.png"
 
 description='''${mod_description}'''
 

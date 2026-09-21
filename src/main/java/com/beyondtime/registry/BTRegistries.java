@@ -1,6 +1,6 @@
-package com.deeptime.registry;
+package com.beyondtime.registry;
 
-import com.deeptime.DeepTime;
+import com.beyondtime.BeyondTime;
 
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
@@ -19,26 +19,26 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  * features) are added by the world generation step, because they are registered differently
  * from ordinary content.
  */
-public final class DTRegistries {
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(DeepTime.MODID);
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(DeepTime.MODID);
-    public static final DeferredRegister.Entities ENTITY_TYPES = DeferredRegister.createEntities(DeepTime.MODID);
+public final class BTRegistries {
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(BeyondTime.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(BeyondTime.MODID);
+    public static final DeferredRegister.Entities ENTITY_TYPES = DeferredRegister.createEntities(BeyondTime.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
-            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, DeepTime.MODID);
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, BeyondTime.MODID);
     public static final DeferredRegister<MenuType<?>> MENU_TYPES =
-            DeferredRegister.create(Registries.MENU, DeepTime.MODID);
+            DeferredRegister.create(Registries.MENU, BeyondTime.MODID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, DeepTime.MODID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BeyondTime.MODID);
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
-            DeferredRegister.create(Registries.PARTICLE_TYPE, DeepTime.MODID);
+            DeferredRegister.create(Registries.PARTICLE_TYPE, BeyondTime.MODID);
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-            DeferredRegister.create(Registries.SOUND_EVENT, DeepTime.MODID);
+            DeferredRegister.create(Registries.SOUND_EVENT, BeyondTime.MODID);
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
-            DeferredRegister.create(Registries.RECIPE_TYPE, DeepTime.MODID);
+            DeferredRegister.create(Registries.RECIPE_TYPE, BeyondTime.MODID);
     public static final DeferredRegister.DataComponents DATA_COMPONENTS =
-            DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, DeepTime.MODID);
+            DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, BeyondTime.MODID);
 
-    private DTRegistries() {}
+    private BTRegistries() {}
 
     /** Attaches every registry of the mod to the mod event bus. */
     public static void register(IEventBus modEventBus) {

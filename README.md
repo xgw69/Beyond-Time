@@ -1,12 +1,11 @@
-# Deep Time（深时）
+# Beyond-Time
 
-一个关于**这个世界的历史**的 Minecraft 模组：从显微镜下的微生物开始，一步步做古DNA测序、
-克隆出生物过去的形态，找回失落的魔法与科技，最后造出能回到各个维度过去的机器，
-弄清末影人为什么怕水、猪猡兽到了主世界为什么会僵尸化、地狱和末地为什么曾经满是水。
+一个关于 **Minecraft 世界历史** 的模组：从显微镜下的微生物开始，逐步发现古老的故事，
+克隆出部分生物过去的形态，找回失落的魔法与科技，最后造出能回到各个维度过去的机器，
+弄清这个世界到底发生过什么。
 
-An archaeology mod for Minecraft: microbes under a microscope, ancient DNA, cloning the
-ancestral forms of mobs, lost magic and technology, and time machines that travel to the past
-of every dimension.
+An archaeology mod for Minecraft: microscopes and microbial samples, ancient DNA, the ancestral
+forms of living creatures, and machines that travel to the past of each dimension.
 
 ## 目标平台
 
@@ -16,47 +15,49 @@ of every dimension.
 | NeoForge | 26.2.0.88 |
 | Java | 25 |
 | 构建 | Gradle 9.2.1 + ModDevGradle 2.0.147 |
+| mod id | `beyondtime`（暂定） |
 
 ## 当前状态
 
-M0 已完成：项目骨架可构建，入口类与注册中枢就位。
-内容开发计划见 [docs/DESIGN.md](docs/DESIGN.md)，环境细节见 [docs/SETUP.md](docs/SETUP.md)。
+M0 完成：项目骨架可构建，入口类与注册中枢就位，开发与测试渠道已就绪。
 
-## 构建与运行
+- 内容由作者定义，开发方不自行设计设定。
+- 规则与协作方式见 [docs/DESIGN.md](docs/DESIGN.md)
+- 设定登记表见 [docs/LORE_INTAKE.md](docs/LORE_INTAKE.md)
+- 运行/测试方式见 [docs/DEV_LOOP.md](docs/DEV_LOOP.md)
+- 环境与镜像配置见 [docs/SETUP.md](docs/SETUP.md)
+
+## 快速开始
 
 ```bash
-./gradlew build                # 构建 jar -> build/libs/deeptime-<version>.jar
-./gradlew runClient            # 启动带本模组的客户端
-./gradlew runServer            # 启动专用服务端
-./gradlew runData              # 运行数据生成，产物写入 src/generated/resources
-./gradlew runGameTestServer    # 跑 GameTest（自动化验证）
+./gradlew build      # 构建
+./gradlew runClient  # 直接启动带本模组的 Minecraft 26.2（最常用的调试方式）
+./gradlew runData    # 重新生成资源与数据 JSON
 ```
 
-Windows 上用 `gradlew.bat`。需要 JDK 25 参与工具链，配置方法见 [docs/SETUP.md](docs/SETUP.md)。
+Windows 可直接双击 `tools\dev-client.bat` / `tools\dev-data.bat`。
 
 ## 目录结构
 
 ```
-src/main/java/com/deeptime/    模组代码（入口、注册中枢、后续按功能分包）
+src/main/java/com/beyondtime/  模组代码
 src/main/resources/            手写资源（语言文件等）
 src/main/templates/            neoforge.mods.toml 模板，构建时展开占位符
 src/generated/resources/       数据生成产物（提交进仓库）
-docs/                          设计蓝图与环境说明
+docs/                          设计、设定登记表、环境与调试说明
+tools/                         调试用快捷脚本
+.agents/                       第三方 Minecraft 开发技能包（MIT，见目录内 README）
 ```
 
-## 素材
+## 素材规格
 
-物品/方块贴图、实体模型与贴图由作者制作，规格见 [docs/DESIGN.md](docs/DESIGN.md) 第 11 节。
+统一 **32×32**，路径与细则见 [docs/DESIGN.md](docs/DESIGN.md) 第 5 节。
 
 ## 许可证
 
-暂定 All Rights Reserved，如需开源请改 `gradle.properties` 的 `mod_license`。
+MIT，见 [LICENSE](LICENSE)。
 
 ## 致谢
 
-项目结构与部分规范参考了两个 Minecraft agent 技能包（均为 MIT）：
-
-- [Jahrome907/minecraft-agent-skills](https://github.com/Jahrome907/minecraft-agent-skills)
-- [Zhangmu-XL/minecraft-mod-skills](https://github.com/Zhangmu-XL/minecraft-mod-skills)
-
-构建骨架基于官方 [MDK-26.2-ModDevGradle](https://github.com/NeoForgeMDKs/MDK-26.2-ModDevGradle)。
+项目骨架基于官方 [MDK-26.2-ModDevGradle](https://github.com/NeoForgeMDKs/MDK-26.2-ModDevGradle)；
+开发过程参考了两份 MIT 技能包（见 `.agents/README.md`）。

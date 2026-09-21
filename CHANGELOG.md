@@ -10,3 +10,10 @@
 - 数据生成与运行配置（client / server / gameTestServer / data）
 - 构建镜像与重试配置，适配中国大陆网络环境
 - 设计蓝图 `docs/DESIGN.md` 与环境说明 `docs/SETUP.md`
+
+### Changed
+
+- 项目更名为 **Beyond-Time**：mod id `deeptime` → `beyondtime`，包名 `com.deeptime` → `com.beyondtime`，
+  入口类 `DeepTime`/`DeepTimeClient` → `BeyondTime`/`BeyondTimeClient`，注册中枢 `DTRegistries` → `BTRegistries`
+- 许可证改为 MIT
+- `docs/DESIGN.md` 重写：设定类内容一律由作者提供，开发方只保留规则、协作流程与技术框架
