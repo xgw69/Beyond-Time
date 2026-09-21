@@ -8,9 +8,10 @@ import net.neoforged.neoforge.registries.DeferredItem;
 
 /** Items added by Beyond-Time. */
 public final class BTItems {
-    /** The petri dish (P-02). Stacks to 64 whether it is clean or already used. */
+    /** The petri dish (P-02). Clean dishes stack to 64; a dish holding a sample does not stack. */
     public static final DeferredItem<Item> PETRI_DISH =
-            BTRegistries.ITEMS.registerItem("petri_dish", PetriDishItem::new, properties -> properties.stacksTo(64));
+            BTRegistries.ITEMS.registerItem(
+                    "petri_dish", PetriDishItem::new, properties -> properties.stacksTo(PetriDishItem.CLEAN_STACK_SIZE));
 
     /**
      * The microscope as an item.

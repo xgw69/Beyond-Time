@@ -35,20 +35,30 @@
 
 资源与数据生成产物会写进 `src/generated/resources/`，由我提交进仓库。
 
-## 3. 方便测试的调试命令
+### 2.1 反复调显微镜外形时
 
-**还没做** —— 等你确认要不要（见 `docs/DESIGN.md` 第 7 节）。现在的替代办法是创造模式：
-Beyond-Time 页签里已经有两样东西，配方也都在配方书里。如果要做，计划长这样：
+显微镜的**模型是手写的**（`src/main/resources/assets/beyondtime/models/block/microscope.json`），
+datagen 只生成指向它的 blockstate。所以你可以随便改那个 JSON，回游戏按 **F3 + T** 立刻看到新形状，
+不用跑 `runData`、不用重启。
 
-```mcfunction
-/beyondtime give <物品>         # 直接拿物品
-/beyondtime unlock all          # 解锁全部观察对象/微生物（测试用）
-/beyondtime unlock <编号>       # 解锁单个条目，如 M-01
-/beyondtime reset               # 清空进度，回到初始状态
-/beyondtime kit                 # 拿一套测试用工具包
+要注意的是：**碰撞箱写在 Java 里**（`MicroscopeBlock#NORTH_SHAPE`），改了模型元素就得同步改它，
+否则描边和实际外形会对不上。两边的坐标表和备选方案都在 `docs/MICROSCOPE.md`。
+
+想直接换成备选外形（比如 B 方案）：
+
+```powershell
+Copy-Item tools\microscope-variants\b_tower.json src\main\resources\assets\beyondtime\models\block\microscope.json
 ```
 
-需要什么别的调试指令直接说，我加上去。
+再按 `docs/MICROSCOPE.md` 里 B 方案那段替换 `NORTH_SHAPE`，重启一次即可。
+
+## 3. 方便测试的调试命令
+
+**已确认不做** `/beyondtime` 调试命令。测试走创造模式：Beyond-Time 页签里有显微镜和培养皿，
+配方也都在配方书里；需要的材料直接搜索物品栏拿。
+
+如果测试过程中发现"每次都要手动摆一遍太麻烦"，告诉我具体卡在哪一步，我给你想办法
+（比如做成一个结构文件、或者临时加一条指令）。
 
 ## 4. 其他命令
 
@@ -76,4 +86,6 @@ Beyond-Time 页签里已经有两样东西，配方也都在配方书里。如�
 | 游戏起不来 | 看 `run/logs/latest.log` 最后的报错，直接发给我 |
 | 贴图显示成紫黑格 | 检查路径与文件名（`assets/beyondtime/textures/item/<名字>.png`），然后 F3+T |
 | 改的 JSON 不生效 | 跑一次 `tools\dev-data.bat`，再 F3+T |
+| 界面槽位/背景错位 | 界面背景 PNG 必须 **256×256**（面板画在左上角 176×166 里），见 `docs/MICROSCOPE.md` 4.4 |
+| 方块外观和描边不一致 | 模型 JSON 和 `MicroscopeBlock#NORTH_SHAPE` 的坐标没对上 |
 | 构建报 Java 25 找不到 | 见 `docs/SETUP.md` 第 1 节（JDK 25 路径） |

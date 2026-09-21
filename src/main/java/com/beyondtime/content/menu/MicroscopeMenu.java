@@ -26,7 +26,13 @@ public class MicroscopeMenu extends AbstractContainerMenu {
     public static final int INVENTORY_X = 8;
     public static final int INVENTORY_Y = 84;
 
-    /** Size of the background texture drawn by the screen. */
+    /**
+     * Size of the background texture drawn by the screen.
+     *
+     * <p>Every container background, ours included, is a 256x256 PNG with the actual 176x166 panel in
+     * its top left corner. Handing the game a smaller number here squeezes the panel and everything
+     * drawn on it stops lining up with the slots.
+     */
     public static final int BACKGROUND_TEXTURE_SIZE = 256;
 
     private final Container microscope;

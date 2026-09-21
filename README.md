@@ -19,10 +19,14 @@ forms of living creatures, and machines that travel to the past of each dimensio
 
 ## 当前状态
 
-M0 完成：项目骨架可构建，入口类与注册中枢就位，开发与测试渠道已就绪。
+M0 完成，M1 进行中。
+
+- M1 已有：显微镜（非完整方块、四个朝向、可放入/取出培养皿）、培养皿（采集/清洗/采集后不可堆叠）、
+  显微镜观察界面雏形、配方与战利品数据生成。**等作者测试与挑选外形。**
 
 - 内容由作者定义，开发方不自行设计设定。
 - 规则与协作方式见 [docs/DESIGN.md](docs/DESIGN.md)
+- 显微镜外形方案、贴图规格、界面坐标见 [docs/MICROSCOPE.md](docs/MICROSCOPE.md)
 - 设定登记表见 [docs/LORE_INTAKE.md](docs/LORE_INTAKE.md)
 - 配方写法标准见 [docs/RECIPE_SPEC.md](docs/RECIPE_SPEC.md)（配方登记在 [docs/RECIPES.md](docs/RECIPES.md)）
 - 运行/测试方式见 [docs/DEV_LOOP.md](docs/DEV_LOOP.md)
@@ -52,7 +56,9 @@ tools/                         调试用快捷脚本
 
 ## 素材规格
 
-统一 **32×32**，路径与细则见 [docs/DESIGN.md](docs/DESIGN.md) 第 5 节。
+物品/方块贴图统一 **32×32**，容器界面背景统一 **256×256**（可见面板画在左上角 176×166 里）。
+路径、UV 规则与固定坐标见 [docs/DESIGN.md](docs/DESIGN.md) 第 5 节与
+[docs/MICROSCOPE.md](docs/MICROSCOPE.md) 第 4 节。
 
 ## 许可证
 

@@ -31,8 +31,17 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * <p>What a dish actually collects is not designed yet, so collecting currently only flips the
  * {@link BTDataComponents#SAMPLE} flag.
+ *
+ * <p>Clean dishes stack to 64, a dish that has taken a sample does not stack at all: one sample,
+ * one dish.
  */
 public class PetriDishItem extends Item {
+    /** Stack size of a dish that has not taken a sample yet. */
+    public static final int CLEAN_STACK_SIZE = 64;
+
+    /** Stack size of a dish that already holds a sample. */
+    public static final int USED_STACK_SIZE = 1;
+
     public PetriDishItem(Item.Properties properties) {
         super(properties);
     }
@@ -40,6 +49,15 @@ public class PetriDishItem extends Item {
     /** Whether this dish has already taken a sample and therefore needs washing. */
     public static boolean hasSample(ItemStack stack) {
         return stack.has(BTDataComponents.SAMPLE.get());
+    }
+
+    /**
+     * The stack size depends on the individual stack rather than on the item, so a stack of clean
+     * dishes stays at 64 while the dish that has just been swabbed leaves as a single item.
+     */
+    @Override
+    public int getMaxStackSize(ItemStack stack) {
+        return hasSample(stack) ? USED_STACK_SIZE : CLEAN_STACK_SIZE;
     }
 
     /** Right click against air. */

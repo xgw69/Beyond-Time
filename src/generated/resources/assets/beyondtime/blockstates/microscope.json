@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "beyondtime:block/microscope",
+      "y": 90
+    },
+    "facing=north": {
       "model": "beyondtime:block/microscope"
+    },
+    "facing=south": {
+      "model": "beyondtime:block/microscope",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "beyondtime:block/microscope",
+      "y": 270
     }
   }
 }

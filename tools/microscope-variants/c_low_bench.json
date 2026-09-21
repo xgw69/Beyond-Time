@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "beyondtime:block/microscope",
+    "body": "beyondtime:block/microscope",
+    "glass": "beyondtime:block/microscope_glass"
+  },
+  "elements": [
+    { "from": [1, 0, 1], "to": [15, 3, 15], "faces": { "down": { "texture": "#body", "cullface": "down" }, "up": { "texture": "#body" }, "north": { "texture": "#body" }, "south": { "texture": "#body" }, "west": { "texture": "#body" }, "east": { "texture": "#body" } } },
+    { "from": [11, 3, 11], "to": [14, 8, 15], "faces": { "down": { "texture": "#body" }, "up": { "texture": "#body" }, "north": { "texture": "#body" }, "south": { "texture": "#body" }, "west": { "texture": "#body" }, "east": { "texture": "#body" } } },
+    { "from": [4, 6, 4], "to": [14, 8, 15], "faces": { "down": { "texture": "#body" }, "up": { "texture": "#body" }, "north": { "texture": "#body" }, "south": { "texture": "#body" }, "west": { "texture": "#body" }, "east": { "texture": "#body" } } },
+    { "from": [6, 3, 6], "to": [8, 10, 8], "faces": { "down": { "texture": "#glass" }, "up": { "texture": "#glass" }, "north": { "texture": "#glass" }, "south": { "texture": "#glass" }, "west": { "texture": "#glass" }, "east": { "texture": "#glass" } } }
+  ]
+}

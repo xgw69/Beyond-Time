@@ -15,6 +15,19 @@ import net.minecraft.world.entity.player.Inventory;
  *
  * <p>The sample report area on the right is a placeholder: it is laid out and drawn, but always says
  * that there is nothing to report, until the microbial catalogue exists.
+ *
+ * <p>Coordinates here come in two flavours, and mixing them up is what makes a container GUI look
+ * broken:
+ *
+ * <ul>
+ *   <li>the background is drawn in screen coordinates, so it is offset by {@code leftPos/topPos};
+ *   <li>{@link #extractLabels} runs inside a pose that is <em>already</em> translated by
+ *       {@code leftPos/topPos}, exactly like {@link AbstractContainerScreen}'s own labels, so every
+ *       coordinate in there is relative to the GUI's top left corner.
+ * </ul>
+ *
+ * <p>The background texture is 256x256 - the size every vanilla container background uses - with the
+ * visible 176x166 panel drawn in its top left corner. See {@code docs/MICROSCOPE.md}.
  */
 public class MicroscopeScreen extends AbstractContainerScreen<MicroscopeMenu> {
     private static final Identifier BACKGROUND =
@@ -25,6 +38,10 @@ public class MicroscopeScreen extends AbstractContainerScreen<MicroscopeMenu> {
     private static final int REPORT_WIDTH = 120;
     private static final int REPORT_HEIGHT = 48;
 
+    private static final int COLOR_OUTLINE = 0xFF8B8B8B;
+    private static final int COLOR_TITLE = 0xFF404040;
+    private static final int COLOR_EMPTY = 0xFF808080;
+
     public MicroscopeScreen(MicroscopeMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 176, 166);
         this.inventoryLabelY = this.imageHeight - 94;
@@ -33,13 +50,11 @@ public class MicroscopeScreen extends AbstractContainerScreen<MicroscopeMenu> {
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(graphics, mouseX, mouseY, partialTick);
-        int xo = (this.width - this.imageWidth) / 2;
-        int yo = (this.height - this.imageHeight) / 2;
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 BACKGROUND,
-                xo,
-                yo,
+                this.leftPos,
+                this.topPos,
                 0.0F,
                 0.0F,
                 this.imageWidth,
@@ -52,22 +67,21 @@ public class MicroscopeScreen extends AbstractContainerScreen<MicroscopeMenu> {
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         super.extractLabels(graphics, mouseX, mouseY);
 
-        int xo = this.leftPos + REPORT_X;
-        int yo = this.topPos + REPORT_Y;
-        graphics.outline(xo, yo, REPORT_WIDTH, REPORT_HEIGHT, 0xFF8B8B8B);
+        // GUI-local coordinates: the pose already sits at the top left corner of the panel.
+        graphics.outline(REPORT_X, REPORT_Y, REPORT_WIDTH, REPORT_HEIGHT, COLOR_OUTLINE);
         graphics.text(
                 this.font,
                 Component.translatable("gui.beyondtime.microscope.report_title"),
-                xo + 4,
-                yo + 4,
-                0xFF404040,
+                REPORT_X + 4,
+                REPORT_Y + 4,
+                COLOR_TITLE,
                 false);
         graphics.text(
                 this.font,
                 Component.translatable("gui.beyondtime.microscope.report_empty"),
-                xo + 4,
-                yo + 18,
-                0xFF808080,
+                REPORT_X + 4,
+                REPORT_Y + 18,
+                COLOR_EMPTY,
                 false);
     }
 }
