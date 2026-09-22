@@ -1,6 +1,6 @@
 # Draws orthographic front / side / top views of the microscope model variants so the shapes can be
-# compared without launching the game. Only understands what the microscope models use: boxes with a
-# single "#body" or "#glass" texture each.
+# compared without launching the game. Only understands what the microscope models use: boxes whose
+# north face names a texture variable; variables containing "lens" or "glass" are drawn as glass.
 #
 # Usage:  pwsh -File tools/preview-model.ps1
 # Output: docs/img/microscope-shapes.png
@@ -21,9 +21,9 @@ $gridColor = [System.Drawing.Color]::FromArgb(60, 0, 0, 0)
 $frameColor = [System.Drawing.ColorTranslator]::FromHtml('#888888')
 
 $variants = @(
-    @{ Title = 'A  desk';       File = 'a_desk.json' },
-    @{ Title = 'B  tower';      File = 'b_tower.json' },
-    @{ Title = 'C  low bench';  File = 'c_low_bench.json' }
+    @{ Title = 'A  desk (in use)'; File = 'a_desk_per_part.json' },
+    @{ Title = 'B  tower';         File = 'b_tower.json' },
+    @{ Title = 'C  low bench';     File = 'c_low_bench.json' }
 )
 
 $viewNames = @('front', 'side (west, north left)', 'top (north up)')
@@ -70,7 +70,8 @@ for ($v = 0; $v -lt $variants.Count; $v++) {
         foreach ($element in $model.elements) {
             $fx = [int]$element.from[0]; $fy = [int]$element.from[1]; $fz = [int]$element.from[2]
             $tx = [int]$element.to[0];   $ty = [int]$element.to[1];   $tz = [int]$element.to[2]
-            $colour = if ($element.faces.north.texture -eq '#glass') { $glassColor } else { $bodyColor }
+            $variable = $element.faces.north.texture
+            $colour = if ($variable -match 'lens|glass') { $glassColor } else { $bodyColor }
 
             if ($viewIndex -eq 0) {
                 # looking from the north: horizontal = x, vertical = y, depth = z

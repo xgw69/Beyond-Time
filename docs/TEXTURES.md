@@ -28,13 +28,13 @@
 
 | 文件 | 尺寸 | 现在贴在 | 说明 |
 |---|---|---|---|
-| `block/microscope.png` | 32×32 | 底座、载物台、立柱、横臂 的**每一个面** | 也是方块的 `particle`（破坏粒子） |
-| `block/microscope_glass.png` | 32×32 | 镜筒的每一个面 | 可以带透明 |
-| `block/microscope_base.png` | 32×32 | —— | 只在"每个零件一张图"那套里用，**现在没启用** |
-| `block/microscope_stage.png` | 32×32 | —— | 同上 |
-| `block/microscope_pillar.png` | 32×32 | —— | 同上 |
-| `block/microscope_arm.png` | 32×32 | —— | 同上 |
-| `block/microscope_lens.png` | 32×32 | —— | 同上 |
+| `block/microscope_base.png` | 32×32 | 底座 | **正式贴图** |
+| `block/microscope_stage.png` | 32×32 | 载物台 | **正式贴图** |
+| `block/microscope_pillar.png` | 32×32 | 立柱 | **正式贴图** |
+| `block/microscope_arm.png` | 32×32 | 横臂 | **正式贴图** |
+| `block/microscope_lens.png` | 32×32 | 镜筒 | **正式贴图**，可带透明 |
+| `block/microscope.png` | 32×32 | —— | **旧版单贴图**，正式模型已经不用了 |
+| `block/microscope_glass.png` | 32×32 | —— | **旧版单贴图**，同上 |
 | `block/microscope_atlas.png` | 32×32 | —— | 只在"每个面单独画"那套里用，**现在没启用** |
 | `item/petri_dish.png` | 32×32 | 培养皿物品 | 四角必须透明 |
 | `microbe/<id>.png` | 32×32 | 显微镜界面里的菌种图标 | 界面里画成 16×16，共 12 张 |
@@ -78,15 +78,18 @@
 
 ## 4. 方案一：每个零件一张图（**推荐**）
 
-5 个零件各用一张 32×32，互不干扰，仍然满足"统一 32×32"。
+**这条已经是正式的写法**（也是规则 R10）：5 个零件各用一张 32×32，互不干扰，仍然满足"统一 32×32"。
 
 ### 4.1 切换
+
+正式模型已经就是这个方案，不需要再切换。如果以后被改回单贴图，用这条命令切回来：
 
 ```powershell
 Copy-Item tools\microscope-variants\a_desk_per_part.json src\main\resources\assets\beyondtime\models\block\microscope.json
 ```
 
-（想切回来就把 `a_desk.json` 覆盖回去。）
+`a_desk_single.json` 是旧版单贴图模型，只在需要对照当年效果时才用（它引用
+`microscope.png` / `microscope_glass.png`，所以那两张旧图一直留着没删）。
 
 ### 4.2 要画的 5 张图
 
@@ -103,8 +106,23 @@ Copy-Item tools\microscope-variants\a_desk_per_part.json src\main\resources\asse
 
 ### 4.3 完整文件
 
-在 `tools/microscope-variants/a_desk_per_part.json`，就是现在的模型把 `#body` 换成
-`#base` / `#stage` / `#pillar` / `#arm`，`#glass` 换成 `#lens`，其余坐标一个没动。
+`models/block/microscope.json` 本身就是这一套，`tools/microscope-variants/a_desk_per_part.json`
+是它的副本（两个文件内容完全一致，改完其中一个记得同步另一个）。
+
+它的 `textures` 块只有六个名字：
+
+```json
+"textures": {
+  "particle": "beyondtime:block/microscope_base",
+  "base": "beyondtime:block/microscope_base",
+  "stage": "beyondtime:block/microscope_stage",
+  "pillar": "beyondtime:block/microscope_pillar",
+  "arm": "beyondtime:block/microscope_arm",
+  "lens": "beyondtime:block/microscope_lens"
+}
+```
+
+五个零件各自引用一个变量，几何坐标和单贴图那版**一模一样**，只有贴图来源变了。
 
 ## 5. 方案二：每个面单独画（一张图集 + uv）
 
@@ -266,6 +284,88 @@ Copy-Item tools\microscope-variants\a_desk_per_face.json src\main\resources\asse
 | 方块模型（手写） | `src/main/resources/assets/beyondtime/models/block/microscope.json` |
 | 物品定义（指向方块模型） | `src/generated/resources/assets/beyondtime/items/microscope.json` |
 | blockstate（datagen 生成，四个朝向） | `src/generated/resources/assets/beyondtime/blockstates/microscope.json` |
-| 可切换的模型变体 | `tools/microscope-variants/`（`a_desk` / `b_tower` / `c_low_bench` / `a_desk_per_part` / `a_desk_per_face`） |
+| 可切换的模型变体 | `tools/microscope-variants/`（`a_desk_per_part` 当前 / `a_desk_single` 旧版单贴图 / `a_desk_per_face` 图集版 / `b_tower` / `c_low_bench`） |
 | 占位贴图生成 | `tools/make-placeholder-textures.ps1` |
 | 四个预览脚本 | `tools/preview-model.ps1` / `preview-atlas.ps1` / `preview-gui.ps1` / `preview-textures.ps1` |
+
+## 10. 新方块的约定（规则 R10）
+
+**从显微镜之后开始，所有新方块都按这个来：**
+
+| 方块形状 | 怎么拆 | 贴图命名 |
+|---|---|---|
+| **完整方块**（占满一格） | 按**面**拆，六个面各一张 | `<方块名>_up` / `_down` / `_north` / `_south` / `_west` / `_east` |
+| **非完整方块**（机器、台面等） | 按**零件**拆，每个能看出形状的部件一张 | `<方块名>_<零件名>`，零件名自己定（如 `_base` / `_stage` / `_pillar`） |
+
+**不允许**一个方块只有一张贴图铺满所有面。就算两个面画得完全一样，也要**两个变量**——
+这样以后想单独改其中一个面，不用动模型结构。
+
+### 10.1 起手：跑脚手架
+
+```powershell
+# 完整方块：生成 6 张面贴图 + 一个六面都接好的模型 JSON
+pwsh -File tools/new-block.ps1 -Block copper_centrifuge
+
+# 非完整方块：只生成零件贴图（几何要手写），并打印可粘贴的 textures 片段
+pwsh -File tools/new-block.ps1 -Block cloning_vat -Units base,tank,panel,pipe
+```
+
+脚本**默认不覆盖已存在的文件**，要重画加 `-Force`。生成的东西：
+
+```
+src/main/resources/assets/beyondtime/textures/block/<方块名>_*.png   32×32 占位图
+src/main/resources/assets/beyondtime/models/block/<方块名>.json      只有完整方块会生成
+```
+
+占位图每张颜色不同、左上角有 N 个小点（第几张），这样在游戏里一眼能看出哪个面是哪张。
+
+### 10.2 完整方块的模型长这样
+
+```json
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "beyondtime:block/copper_centrifuge_up",
+    "up":    "beyondtime:block/copper_centrifuge_up",
+    "down":  "beyondtime:block/copper_centrifuge_down",
+    "north": "beyondtime:block/copper_centrifuge_north",
+    "south": "beyondtime:block/copper_centrifuge_south",
+    "west":  "beyondtime:block/copper_centrifuge_west",
+    "east":  "beyondtime:block/copper_centrifuge_east"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up":    { "texture": "#up",    "cullface": "up" },
+        "down":  { "texture": "#down",  "cullface": "down" },
+        "north": { "texture": "#north", "cullface": "north" },
+        "south": { "texture": "#south", "cullface": "south" },
+        "west":  { "texture": "#west",  "cullface": "west" },
+        "east":  { "texture": "#east",  "cullface": "east" }
+      }
+    }
+  ]
+}
+```
+
+要点：
+
+- 一个 `element` 就够，六面齐全 + 每面 `cullface` 才是"完整方块"（贴邻居的那一面不渲染）；
+- `from` 0 / `to` 16 时自动 uv 正好是整张贴图，不用写 `uv`；
+- `minecraft:block/block` 这个 parent 提供手持/物品栏的显示变换，别去掉。
+
+### 10.3 非完整方块的模型
+
+几何要手写（参考 `models/block/microscope.json`），但规矩一样：**每个部件至少一个变量**，
+部件内部如果某个面要单独画，就照第 5 节写 `uv`。
+
+### 10.4 完整流程
+
+1. `pwsh -File tools/new-block.ps1 -Block <名字>`（或 `-Units a,b,c`）
+2. 在 `BTBlocks.java` 里注册方块
+3. 在 `BTModelProvider.java` 里加 blockstate 的 datagen
+4. 完整方块一般还要加 `BlockItem` 和 `items/<名字>.json` 的 datagen
+5. `.\gradlew.bat runData` → `tools\dev-client.bat` 里看效果
+6. 逐张替换 `<方块名>_*.png`
