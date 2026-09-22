@@ -20,10 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -37,6 +40,10 @@ import org.jspecify.annotations.Nullable;
  * the dish take priority over the block it is pointed at, which is deliberate - showing a chest a
  * dish means "swab the air here", not "open the chest". The microscope is the one exception, because
  * showing a microscope a dish means "put this in".
+ *
+ * <p>Water is the one block the game's own pick cannot report, because it has no outline to hit, so
+ * aiming at water would otherwise swab whatever sits behind it. {@link #aimedAtWater} traces a second
+ * time with fluids enabled and lets water win whenever that is what the player is really looking at.
  *
  * <p>A dish never produces a resource. The only thing a sample is good for is being read on a
  * microscope screen.
@@ -90,17 +97,50 @@ public class PetriDishItem extends Item {
             return InteractionResult.PASS;
         }
 
+        BlockState water = aimedAtWater(level, player);
+        if (water != null) {
+            state = water;
+        }
+
         return swab(level, player, context.getHand(), MicrobeProfiles.forBlock(state), MicrobeSample.Origin.ofBlock(state.getBlock()));
     }
 
-    /** Right click against nothing at all: the air of the dimension the player is standing in. */
+    /**
+     * Right click against nothing at all: the water in front of the player if there is any, and the
+     * air of the dimension they are standing in otherwise.
+     */
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (hasSample(player.getItemInHand(hand))) {
             return InteractionResult.PASS;
         }
 
+        BlockState water = aimedAtWater(level, player);
+        if (water != null) {
+            return swab(level, player, hand, MicrobeProfiles.forBlock(water), MicrobeSample.Origin.ofBlock(water.getBlock()));
+        }
+
         return swab(level, player, hand, MicrobeProfiles.forAir(level), MicrobeSample.Origin.ofAir(level));
+    }
+
+    /**
+     * Re-traces the player's line of sight while asking for water.
+     *
+     * <p>The hit result the game hands to {@link #onItemUseFirst} was traced with fluids turned off,
+     * so aiming at a lake reports the sand behind it and the water itself can never be swabbed. This
+     * second trace stops at the water surface instead. Anything that is not plain water is discarded,
+     * so every other block, and every waterlogged one, keeps behaving exactly as before.
+     *
+     * @return the water the player is looking at, or {@code null} when it is not water
+     */
+    private static @Nullable BlockState aimedAtWater(Level level, Player player) {
+        BlockHitResult hit = getPlayerPOVHitResult(level, player, ClipContext.Fluid.WATER);
+        if (hit.getType() != HitResult.Type.BLOCK) {
+            return null;
+        }
+
+        BlockState state = level.getBlockState(hit.getBlockPos());
+        return state.is(Blocks.WATER) ? state : null;
     }
 
     /** Right click against a block that declined the click itself, i.e. a cauldron to wash in. */

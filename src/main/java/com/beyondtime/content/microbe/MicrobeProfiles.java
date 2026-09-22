@@ -44,6 +44,10 @@ import org.jspecify.annotations.Nullable;
  * {@link #collect} turns them into a number of microbes with a little randomness, so two dishes
  * taken from the same block never read exactly the same.
  *
+ * <p>A block's table depends on the block alone, never on the dimension it is standing in. Dirt
+ * carried into the Nether still reports the Overworld dirt mix, 古水菌 included; what the Nether
+ * lacks is 古水菌 of its own, in its own blocks and in its air.
+ *
  * <p>The numbers live here so they are easy to tune; {@code docs/MICROBE_PROFILES.md} prints the
  * same tables in a form that is easier to read and to edit.
  */
@@ -57,7 +61,7 @@ public final class MicrobeProfiles {
     private static final int PER_WEIGHT = 12;
 
     /** How far each microbe's amount is allowed to wander from its weight, as a fraction. */
-    private static final double JITTER = 0.12;
+    private static final double JITTER = 0.08;
 
     private static final Map<Block, Map<Microbe, Integer>> BY_BLOCK = buildBlocks();
     private static final Map<TagKey<Block>, Map<Microbe, Integer>> BY_TAG = buildTags();
@@ -253,8 +257,9 @@ public final class MicrobeProfiles {
         table.tag(BlockTags.BASE_STONE_NETHER, table.mix()
                 .add(STONE, 20).add(FIRE, 16).add(BIZARRE, 5));
 
-        // Ahead of #logs on purpose: a stripped crimson stem is still Nether wood, and the Nether
-        // has no 古水菌 at all - only 火元素 crowding it out.
+        // Ahead of #logs on purpose: a stripped crimson stem is still Nether wood, and no Nether
+        // block of its own carries 古水菌 - only 火元素 crowding it out. Overworld wood brought
+        // along keeps its own mix, 古水菌 included; that is a property of the block, not the place.
         table.tag(BlockItemTags.CRIMSON_STEMS.block(), table.mix()
                 .add(CRIMSON_MOLD, 22).add(WOOD_MOLD, 10).add(FIRE, 6));
         table.tag(BlockItemTags.WARPED_STEMS.block(), table.mix()
@@ -282,7 +287,8 @@ public final class MicrobeProfiles {
                 .add(COPPER, 12).add(ENDER, 4).add(FAE, 3).add(FIRE, 2));
 
         // Hot: 火元素 crowds 古水菌 out completely, which is the author's explanation for why the
-        // Nether has none.
+        // Nether has none of its own. Only the air table here; a block keeps its own mix wherever
+        // it is placed.
         table.air(Level.NETHER, table.mix()
                 .add(FIRE, 34).add(STONE, 18).add(BIZARRE, 12).add(COPPER, 8)
                 .add(CRIMSON_MOLD, 8).add(ENDER, 6).add(WOOD_MOLD, 6).add(FAE, 2));
