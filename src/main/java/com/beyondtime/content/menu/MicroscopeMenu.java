@@ -28,7 +28,7 @@ public class MicroscopeMenu extends AbstractContainerMenu {
      * background PNG can stay a plain 256x256 with the panel in its top left corner.
      */
     public static final int PANEL_WIDTH = 256;
-    public static final int PANEL_HEIGHT = 232;
+    public static final int PANEL_HEIGHT = 248;
 
     /** The dish slot, on the "stage" in the top left of the panel. */
     public static final int DISH_SLOT_X = 10;
@@ -36,7 +36,7 @@ public class MicroscopeMenu extends AbstractContainerMenu {
 
     /** The player inventory, centred under the report area. */
     public static final int INVENTORY_X = (PANEL_WIDTH - 9 * 18) / 2;
-    public static final int INVENTORY_Y = 150;
+    public static final int INVENTORY_Y = PANEL_HEIGHT - 82;
 
     /**
      * Size of the background texture drawn by the screen.

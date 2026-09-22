@@ -5,7 +5,7 @@
 #
 # Sizes are fixed by docs/MICROSCOPE.md:
 #   block/item/microbe textures  32x32, may use transparency
-#   container background         256x256, with the visible 256x232 panel in the top left corner
+#   container background         256x256, with the visible 256x248 panel in the top left corner
 #
 # Usage:  pwsh -File tools/make-placeholder-textures.ps1
 
@@ -196,9 +196,9 @@ foreach ($microbe in $microbes) {
 $gui = New-Image 256 256
 $g = [System.Drawing.Graphics]::FromImage($gui)
 $g.SmoothingMode = 'None'
-$g.FillRectangle((New-Brush '#C6C6C6'), 0, 0, 256, 232)
-$g.DrawRectangle((New-Pen '#FFFFFF'), 0, 0, 255, 231)
-$g.DrawRectangle((New-Pen '#555555'), 1, 1, 253, 229)
+$g.FillRectangle((New-Brush '#C6C6C6'), 0, 0, 256, 248)
+$g.DrawRectangle((New-Pen '#FFFFFF'), 0, 0, 255, 247)
+$g.DrawRectangle((New-Pen '#555555'), 1, 1, 253, 245)
 
 # the stage: the dish slot plus the two lines of source / plate count beside it
 $g.FillRectangle((New-Brush '#B0B0B0'), 6, 18, 110, 28)
@@ -217,12 +217,12 @@ Add-Slot $g 10 22
 # player inventory, matching MicroscopeMenu.INVENTORY_X / _Y
 for ($row = 0; $row -lt 3; $row++) {
     for ($col = 0; $col -lt 9; $col++) {
-        Add-Slot $g (47 + $col * 18) (150 + $row * 18)
+        Add-Slot $g (47 + $col * 18) (166 + $row * 18)
     }
 }
 
 for ($col = 0; $col -lt 9; $col++) {
-    Add-Slot $g (47 + $col * 18) 208
+    Add-Slot $g (47 + $col * 18) 224
 }
 
 $g.Dispose()
