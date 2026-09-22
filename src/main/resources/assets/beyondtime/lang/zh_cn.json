@@ -3,15 +3,42 @@
 
   "block.beyondtime.microscope": "显微镜",
   "item.beyondtime.petri_dish": "培养皿",
-
   "container.beyondtime.microscope": "显微镜",
+  "item.beyondtime.microscope.contains": "内含：%s",
 
   "item.beyondtime.petri_dish.clean": "干净",
   "item.beyondtime.petri_dish.used": "已采集样本 —— 清洗后可再次使用",
-  "item.beyondtime.microscope.contains": "内含：%s",
+  "item.beyondtime.petri_dish.how_to_swab": "对着方块或空气右键，采集一次",
+  "item.beyondtime.petri_dish.how_to_wash": "放进装水的炼药锅清洗，锅下要有篝火、灵魂篝火、岩浆块或熔岩",
+  "item.beyondtime.petri_dish.origin": "采集来源：%s",
+  "item.beyondtime.petri_dish.count": "菌数：%s",
+  "item.beyondtime.petri_dish.read_on_microscope": "放进显微镜才能看清里面的东西",
 
-  "gui.beyondtime.microscope.report_title": "样本报告",
-  "gui.beyondtime.microscope.report_empty": "暂无数据",
+  "gui.beyondtime.microscope.report_title": "微生物",
+  "gui.beyondtime.microscope.report_empty": "培养皿里没有样本",
+  "gui.beyondtime.microscope.no_dish": "载物台是空的",
+  "gui.beyondtime.microscope.clean_dish": "培养皿是干净的",
+  "gui.beyondtime.microscope.origin": "来源：%s",
+  "gui.beyondtime.microscope.count": "菌数：%s",
+  "gui.beyondtime.microscope.more": "另有 %s 种",
+
+  "dimension.minecraft.overworld": "主世界",
+  "dimension.minecraft.the_nether": "下界",
+  "dimension.minecraft.the_end": "末地",
+
+  "microbe.beyondtime.origin.air": "%s的空气",
+
+  "microbe.beyondtime.ancient_water": "古水菌",
+  "microbe.beyondtime.stone": "岩菌",
+  "microbe.beyondtime.fae": "仙灵",
+  "microbe.beyondtime.fire": "火元素",
+  "microbe.beyondtime.crimson_mold": "绯红霉",
+  "microbe.beyondtime.ender": "末影菌",
+  "microbe.beyondtime.copper": "铜菌",
+  "microbe.beyondtime.wood_mold": "木质霉",
+  "microbe.beyondtime.glimmer": "闪亮菌",
+  "microbe.beyondtime.bizarre": "奇异菌",
+  "microbe.beyondtime.false_ancient_water": "伪古水菌",
 
   "beyondtime.configuration.title": "Beyond-Time 配置"
 }

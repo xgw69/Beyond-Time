@@ -3,15 +3,42 @@
 
   "block.beyondtime.microscope": "Microscope",
   "item.beyondtime.petri_dish": "Petri Dish",
-
   "container.beyondtime.microscope": "Microscope",
+  "item.beyondtime.microscope.contains": "Holds: %s",
 
   "item.beyondtime.petri_dish.clean": "Clean",
   "item.beyondtime.petri_dish.used": "Contains a sample - wash it to reuse",
-  "item.beyondtime.microscope.contains": "Holds: %s",
+  "item.beyondtime.petri_dish.how_to_swab": "Right click a block or the air to take one sample",
+  "item.beyondtime.petri_dish.how_to_wash": "Wash it in a water cauldron heated by a campfire, soul campfire, magma block or lava",
+  "item.beyondtime.petri_dish.origin": "Swabbed: %s",
+  "item.beyondtime.petri_dish.count": "Microbes: %s",
+  "item.beyondtime.petri_dish.read_on_microscope": "Put it under a microscope to read it",
 
-  "gui.beyondtime.microscope.report_title": "Sample report",
-  "gui.beyondtime.microscope.report_empty": "No data yet",
+  "gui.beyondtime.microscope.report_title": "Microbes",
+  "gui.beyondtime.microscope.report_empty": "The dish holds no sample",
+  "gui.beyondtime.microscope.no_dish": "The stage is empty",
+  "gui.beyondtime.microscope.clean_dish": "The dish is clean",
+  "gui.beyondtime.microscope.origin": "From: %s",
+  "gui.beyondtime.microscope.count": "Microbes: %s",
+  "gui.beyondtime.microscope.more": "%s more",
+
+  "dimension.minecraft.overworld": "Overworld",
+  "dimension.minecraft.the_nether": "The Nether",
+  "dimension.minecraft.the_end": "The End",
+
+  "microbe.beyondtime.origin.air": "the air of %s",
+
+  "microbe.beyondtime.ancient_water": "Ancient Water",
+  "microbe.beyondtime.stone": "Stone",
+  "microbe.beyondtime.fae": "Fae",
+  "microbe.beyondtime.fire": "Fire",
+  "microbe.beyondtime.crimson_mold": "Crimson Mold",
+  "microbe.beyondtime.ender": "Ender",
+  "microbe.beyondtime.copper": "Copper",
+  "microbe.beyondtime.wood_mold": "Wood Mold",
+  "microbe.beyondtime.glimmer": "Glimmer",
+  "microbe.beyondtime.bizarre": "Bizarre",
+  "microbe.beyondtime.false_ancient_water": "False Ancient Water",
 
   "beyondtime.configuration.title": "Beyond-Time Configs"
 }

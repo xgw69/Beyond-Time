@@ -1,14 +1,17 @@
 package com.beyondtime.content.item;
 
 import java.util.function.Consumer;
+import java.util.Map;
 
+import com.beyondtime.content.microbe.Microbe;
+import com.beyondtime.content.microbe.MicrobeProfiles;
+import com.beyondtime.content.microbe.MicrobeSample;
 import com.beyondtime.registry.BTBlocks;
 import com.beyondtime.registry.BTDataComponents;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,19 +24,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The petri dish (P-02).
  *
- * <p>A dish is either clean or used. A clean dish picks something up exactly once, on a right click
- * against the air or against a block; a used dish cannot pick anything up again until it has been
- * washed in a heated cauldron.
+ * <p>A dish is either clean or used. A clean dish takes exactly one swab and then has to be washed in
+ * a heated cauldron before it can be used again.
  *
- * <p>What a dish actually collects is not designed yet, so collecting currently only flips the
- * {@link BTDataComponents#SAMPLE} flag.
+ * <p>What a swab finds is decided by {@link MicrobeProfiles}: if the block that was clicked is on the
+ * list it collects that block, and otherwise it collects the air of the current dimension. That makes
+ * the dish take priority over the block it is pointed at, which is deliberate - showing a chest a
+ * dish means "swab the air here", not "open the chest". The microscope is the one exception, because
+ * showing a microscope a dish means "put this in".
  *
- * <p>Clean dishes stack to 64, a dish that has taken a sample does not stack at all: one sample,
- * one dish.
+ * <p>A dish never produces a resource. The only thing a sample is good for is being read on a
+ * microscope screen.
  */
 public class PetriDishItem extends Item {
     /** Stack size of a dish that has not taken a sample yet. */
@@ -46,9 +52,14 @@ public class PetriDishItem extends Item {
         super(properties);
     }
 
-    /** Whether this dish has already taken a sample and therefore needs washing. */
+    /** {@return whether this dish is already carrying a sample} */
     public static boolean hasSample(ItemStack stack) {
         return stack.has(BTDataComponents.SAMPLE.get());
+    }
+
+    /** {@return the sample on this dish, or {@code null} when it is clean} */
+    public static @Nullable MicrobeSample sample(ItemStack stack) {
+        return stack.get(BTDataComponents.SAMPLE.get());
     }
 
     /**
@@ -60,57 +71,75 @@ public class PetriDishItem extends Item {
         return hasSample(stack) ? USED_STACK_SIZE : CLEAN_STACK_SIZE;
     }
 
-    /** Right click against air. */
+    /**
+     * Runs before the block gets its turn, which is what lets a clean dish take priority over the
+     * block it is pointed at.
+     */
+    @Override
+    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+        Player player = context.getPlayer();
+        if (player == null || hasSample(stack)) {
+            // A used dish only knows how to be washed, and that runs later, on a heated cauldron.
+            return InteractionResult.PASS;
+        }
+
+        Level level = context.getLevel();
+        BlockState state = level.getBlockState(context.getClickedPos());
+        if (state.is(BTBlocks.MICROSCOPE.get())) {
+            // Showing the microscope a dish means "put it in", never "swab the microscope".
+            return InteractionResult.PASS;
+        }
+
+        return swab(level, player, context.getHand(), MicrobeProfiles.forBlock(state), MicrobeSample.Origin.ofBlock(state.getBlock()));
+    }
+
+    /** Right click against nothing at all: the air of the dimension the player is standing in. */
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (hasSample(player.getItemInHand(hand))) {
             return InteractionResult.PASS;
         }
 
-        if (!level.isClientSide()) {
-            swap(player, hand, true);
-        }
-
-        return InteractionResult.SUCCESS;
+        return swab(level, player, hand, MicrobeProfiles.forAir(level), MicrobeSample.Origin.ofAir(level));
     }
 
-    /** Right click against a block. */
+    /** Right click against a block that declined the click itself, i.e. a cauldron to wash in. */
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
-        if (player == null) {
+        if (player == null || !hasSample(player.getItemInHand(context.getHand()))) {
             return InteractionResult.PASS;
         }
 
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
-
-        // In 26.2 the block gets the first say on a right click, so this only runs when that was
-        // suppressed (sneaking) or declined. Never sample the microscope itself: the player showing it
-        // a dish means "put this in", not "take a swab of the microscope".
-        if (state.is(BTBlocks.MICROSCOPE.get())) {
+        if (!isHeatedWashingStation(level, pos, state)) {
             return InteractionResult.PASS;
         }
 
-        if (hasSample(player.getItemInHand(context.getHand()))) {
-            if (!isHeatedWashingStation(level, pos, state)) {
-                return InteractionResult.PASS;
-            }
+        if (!level.isClientSide()) {
+            LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+            swap(player, context.getHand(), null);
+        }
 
-            if (!level.isClientSide()) {
-                if (state.is(Blocks.WATER_CAULDRON)) {
-                    LayeredCauldronBlock.lowerFillLevel(state, level, pos);
-                }
+        return InteractionResult.SUCCESS;
+    }
 
-                swap(player, context.getHand(), false);
-            }
-
-            return InteractionResult.SUCCESS;
+    /**
+     * Takes a sample, or does nothing when there is nothing to find.
+     *
+     * @param profile the table to roll on, or {@code null} when this block and dimension are both
+     *     unknown, in which case the dish is left clean
+     */
+    private static InteractionResult swab(
+            Level level, Player player, InteractionHand hand, @Nullable Map<Microbe, Integer> profile, MicrobeSample.Origin origin) {
+        if (profile == null) {
+            return InteractionResult.PASS;
         }
 
         if (!level.isClientSide()) {
-            swap(player, context.getHand(), true);
+            swap(player, hand, MicrobeProfiles.collect(origin, profile, level.getRandom()));
         }
 
         return InteractionResult.SUCCESS;
@@ -122,15 +151,15 @@ public class PetriDishItem extends Item {
      * <p>The rest of the stack is left untouched, so a stack of 64 clean dishes becomes 63 clean
      * dishes plus one used dish, exactly like filling a bucket from a stack of buckets.
      *
-     * @param collect {@code true} to add a sample, {@code false} to wash it off
+     * @param sample what the new dish carries, or {@code null} for a washed, clean dish
      */
-    private static void swap(Player player, InteractionHand hand, boolean collect) {
+    private static void swap(Player player, InteractionHand hand, @Nullable MicrobeSample sample) {
         ItemStack held = player.getItemInHand(hand);
         ItemStack replacement = held.copyWithCount(1);
-        if (collect) {
-            replacement.set(BTDataComponents.SAMPLE, Unit.INSTANCE);
-        } else {
+        if (sample == null) {
             replacement.remove(BTDataComponents.SAMPLE);
+        } else {
+            replacement.set(BTDataComponents.SAMPLE, sample);
         }
 
         held.shrink(1);
@@ -168,12 +197,26 @@ public class PetriDishItem extends Item {
                 || below.is(Blocks.LAVA);
     }
 
+    /**
+     * The tooltip says what was swabbed and how much is on the plate, and nothing about which
+     * microbes they are: reading the plate is what the microscope is for.
+     */
     @Override
     public void appendHoverText(
             ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-        tooltip.accept(Component.translatable(hasSample(stack)
-                        ? "item.beyondtime.petri_dish.used"
-                        : "item.beyondtime.petri_dish.clean")
-                .withStyle(hasSample(stack) ? ChatFormatting.GRAY : ChatFormatting.DARK_GREEN));
+        MicrobeSample sample = sample(stack);
+        if (sample == null) {
+            tooltip.accept(Component.translatable("item.beyondtime.petri_dish.clean").withStyle(ChatFormatting.DARK_GREEN));
+            tooltip.accept(Component.translatable("item.beyondtime.petri_dish.how_to_swab").withStyle(ChatFormatting.DARK_GRAY));
+            return;
+        }
+
+        tooltip.accept(Component.translatable("item.beyondtime.petri_dish.used").withStyle(ChatFormatting.GRAY));
+        tooltip.accept(Component.translatable("item.beyondtime.petri_dish.origin", sample.origin().displayName())
+                .withStyle(ChatFormatting.GRAY));
+        tooltip.accept(Component.translatable("item.beyondtime.petri_dish.count", sample.total())
+                .withStyle(ChatFormatting.GRAY));
+        tooltip.accept(Component.translatable("item.beyondtime.petri_dish.read_on_microscope").withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.accept(Component.translatable("item.beyondtime.petri_dish.how_to_wash").withStyle(ChatFormatting.DARK_GRAY));
     }
 }

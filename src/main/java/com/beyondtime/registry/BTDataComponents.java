@@ -1,9 +1,10 @@
 package com.beyondtime.registry;
 
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
+
+import com.beyondtime.content.microbe.MicrobeSample;
 
 /**
  * Data components added by Beyond-Time.
@@ -13,16 +14,16 @@ import net.neoforged.neoforge.registries.DeferredHolder;
  */
 public final class BTDataComponents {
     /**
-     * Present on a petri dish that has picked something up but has not been cleaned yet.
+     * The sample a petri dish is carrying.
      *
-     * <p>The payload is deliberately empty for now: what was collected is not designed yet, so this
-     * only records the "used once" state. It becomes a real sample record once the microbial
-     * catalogue exists.
+     * <p>Present means "used": the dish cannot pick anything else up until it has been washed, and it
+     * does not stack. The payload is what the microscope screen reads, and it is purely
+     * informational - a sample never turns into an item.
      */
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> SAMPLE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<MicrobeSample>> SAMPLE =
             BTRegistries.DATA_COMPONENTS.registerComponentType(
                     "sample",
-                    builder -> builder.persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC));
+                    builder -> builder.persistent(MicrobeSample.CODEC).networkSynchronized(MicrobeSample.STREAM_CODEC));
 
     /** The petri dish currently sitting inside a microscope. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemStack>> CONTAINED_DISH =
