@@ -14,11 +14,14 @@
 
 | # | 零件 | from（起点） | to（终点） | 贴图 |
 |---|---|---|---|---|
-| 1 | 底座 | `1, 0, 1` | `15, 3, 15` | `#body` |
-| 2 | 载物台 | `3, 5, 3` | `11, 6, 13` | `#body` |
-| 3 | 立柱（后方） | `10, 3, 11` | `14, 16, 15` | `#body` |
-| 4 | 横臂 | `5, 13, 5` | `14, 15, 15` | `#body` |
-| 5 | 镜筒（含目镜） | `6, 9, 6` | `8, 16, 8` | `#glass` |
+| 1 | 底座 | `1, 0, 1` | `15, 3, 15` | `#base` → `microscope_base.png` |
+| 2 | 载物台 | `3, 5, 3` | `11, 6, 13` | `#stage` → `microscope_stage.png` |
+| 3 | 立柱（后方） | `10, 3, 11` | `14, 16, 15` | `#pillar` → `microscope_pillar.png` |
+| 4 | 横臂 | `5, 13, 5` | `14, 15, 15` | `#arm` → `microscope_arm.png` |
+| 5 | 镜筒（含目镜） | `6, 9, 6` | `8, 16, 8` | `#lens` → `microscope_lens.png` |
+
+**每个零件一张 32×32 贴图**（规则 R10），所以你有 5 张图要画，各自独立替换。
+画法与文件位置见第 4 节，通用规则见 `docs/TEXTURES.md`。
 
 - 整体高度 16 像素（顶到方块上沿），底座 14×14 像素，站在台面上不占满一格。
 - 底座底面写了 `cullface: down`，贴着地面或台面时那一面不渲染，省一点开销。
@@ -155,11 +158,27 @@ Shapes.or(
 
 | 用途 | 尺寸 | 格式 | 路径 |
 |---|---|---|---|
-| 显微镜机身 | **32×32** | PNG，不透明 | `src/main/resources/assets/beyondtime/textures/block/microscope.png` |
-| 镜筒玻璃 | **32×32** | PNG，可带透明 | `src/main/resources/assets/beyondtime/textures/block/microscope_glass.png` |
+| 显微镜零件（5 张） | **32×32** | PNG，可带透明 | `src/main/resources/assets/beyondtime/textures/block/microscope_<零件>.png` |
 | 培养皿 | **32×32** | PNG，背景必须透明 | `src/main/resources/assets/beyondtime/textures/item/petri_dish.png` |
 | 微生物图标（每种一张） | **32×32** | PNG，背景必须透明 | `src/main/resources/assets/beyondtime/textures/microbe/<id>.png` |
 | 显微镜界面背景 | **256×256** | PNG | `src/main/resources/assets/beyondtime/textures/gui/microscope.png` |
+
+显微镜**按零件分图**（正式写法，规则 R10），5 个零件各一张，全部 32×32：
+
+| 文件名 | 画的是 | 出现在模型的哪几块 |
+|---|---|---|
+| `microscope_base.png` | 铸铁底座、四角螺丝 | 底座 |
+| `microscope_stage.png` | 黑色载物台台面 | 载物台 |
+| `microscope_pillar.png` | 带刻度/齿条的立柱 | 立柱背面竖板 |
+| `microscope_arm.png` | 横臂、调节旋钮 | 横臂 |
+| `microscope_lens.png` | 黄铜镜筒 + 镜片 | 镜筒 |
+
+**每张图上画的是一整个零件的六面外观**，不是"一个面画一张图"。哪张图贴到哪个零件，
+由 `models/block/microscope.json` 的 `textures` 块决定；零件上每一个面都取同一张图。
+因此画的时候想成"给这个小零件糊一层皮"就行，不用考虑面序。
+
+> 旧版单贴图 `block/microscope.png` / `block/microscope_glass.png`（一张图铺满整台机器）
+> 仍然留在仓库里，但**现在的模型已经不用它们了**，可以不管。
 
 微生物图标一共 12 个文件，**id 必须和代码里的 id 完全一致**：
 
@@ -190,8 +209,8 @@ pwsh -File tools/preview-textures.ps1            # 拼成一张对照图 docs/im
 
 ### 4.2 模型里贴图是怎么用的（决定你要画成什么样）
 
-模型元素只写了 `"texture": "#body"`，**没有写 `uv`**，这时游戏会拿这个 box 的 `from`/`to`
-投影到 0..16 的空间里当 uv（也就是"从整张图里取对应位置的那一小块"），
+模型里每个零件只写 `"texture": "#<零件名>"`，**没有写 `uv`**，这时游戏会拿这个 box 的
+`from`/`to` 投影到 0..16 的空间里当 uv（也就是"从那张 32×32 里取对应位置的一小块"），
 **不是**"一个面 = 整张贴图铺满一次"。
 
 32×32 的贴图仍然被当作 16×16 的坐标空间使用（0..16 对应整张图，1 uv = 2 像素），
@@ -200,14 +219,17 @@ pwsh -File tools/preview-textures.ps1            # 拼成一张对照图 docs/im
 
 实际含义：
 
-- `microscope.png` 画成"一块仪器外壳表面"就够了（金属底色 + 接缝 + 几个螺丝），
-  它会被贴到底座、载物台、立柱、横臂的每一个面上。
-- `microscope_glass.png` 只用在镜筒上，画成"玻璃筒 / 镜片"的表面即可，可以带透明。
-- 想更精细（比如立柱正面专门画刻度、载物台专门画黑色台面），就在 JSON 里对应的 face 上
-  加 `"uv": [0, 0, 8, 8]` 之类，把一张 32×32 切成多块分别取用。
+- 每个零件**只对应一张图**，这张图会被贴到该零件盒子的全部 6 个面上。
+- 因为盒子尺寸各不相同（底座 12×1×12、立柱 2×9×4……），同一张图在不同面上的
+  取样范围并不一样。**画的时候把图当成"这个零件的外壳材质"来画就不会出问题**，
+  别去精确对齐某一条边。
+- 镜筒（`microscope_lens.png`）可以带透明，画成"玻璃筒 / 镜片"的表面。
+- 想更精细（比如立柱正面专门画刻度、载物台专门画黑色台面），有两种升级路线：
+  1. 给某个零件写 `uv`，把它的 32×32 切成多块分别取用；
+  2. 改成"按面各一张图"（完整方块用 6 张，非完整方块按零件再按面）。
   **现成的完整示例**：`tools/microscope-variants/a_desk_per_face.json`（一张图集 + 逐面 uv）
-  和 `a_desk_per_part.json`（每个零件一张图），配合 `docs/TEXTURES.md` 第 4、5 节使用。
-  另外这两个变体要用的占位贴图已经生成好了，覆盖过去就能直接跑。
+  和 `a_desk_per_part.json`（每个零件一张图，即当前 `models/block/microscope.json` 的写法）、
+  `a_desk_single.json`（旧版一张图铺满），配合 `docs/TEXTURES.md` 第 4、5 节使用。
 
 ### 4.3 培养皿贴图的注意点
 
