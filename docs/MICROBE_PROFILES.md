@@ -150,12 +150,15 @@
 | `minecraft:nether_wart` | 绯红霉 30、火元素 10、奇异菌 6 |
 | `minecraft:nether_wart_block` | 绯红霉 34、火元素 6、奇异菌 4 |
 | `minecraft:warped_wart_block` | 绯红霉 26、奇异菌 8、仙灵 2 |
-| `minecraft:crimson_stem` | 绯红霉 22、木质霉 10、火元素 6 |
-| `minecraft:warped_stem` | 绯红霉 14、木质霉 12、奇异菌 8 |
+| `minecraft:crimson_planks` | 绯红霉 16、木质霉 12、火元素 4 |
+| `minecraft:warped_planks` | 绯红霉 10、木质霉 14、奇异菌 6 |
 | `minecraft:crimson_nylium` | 绯红霉 18、火元素 8、岩菌 6 |
 | `minecraft:warped_nylium` | 绯红霉 12、火元素 6、奇异菌 8 |
 | `minecraft:crimson_fungus` | 绯红霉 20、奇异菌 5、仙灵 3 |
 | `minecraft:warped_fungus` | 绯红霉 14、奇异菌 8、仙灵 5 |
+
+> 菌柄本体（绯红/诡异菌柄、去皮菌柄、菌核）走下面的 `#crimson_stems` / `#warped_stems` 标签，
+> 那两条排在 `#logs` **前面**，这样下界的木头不会因为 `#logs` 而冒出古水菌。
 
 ---
 
@@ -167,6 +170,8 @@
 |---|---|---|
 | `#minecraft:base_stone_overworld` | 石头、花岗岩、闪长岩、安山岩、凝灰岩、深板岩 | 岩菌 30、奇异菌 6、铜菌 4、古水菌 2、闪亮菌 1 |
 | `#minecraft:base_stone_nether` | 下界岩、玄武岩、黑石 | 岩菌 20、火元素 16、奇异菌 5 |
+| `#minecraft:crimson_stems` | 绯红菌柄 / 去皮 / 菌核 | 绯红霉 22、木质霉 10、火元素 6 |
+| `#minecraft:warped_stems` | 诡异菌柄 / 去皮 / 菌核 | 绯红霉 14、木质霉 12、奇异菌 8 |
 | `#minecraft:logs` | 全部原木 / 菌柄 | 木质霉 34、古水菌 6、奇异菌 5 |
 | `#minecraft:planks` | 全部木板 | 木质霉 18、奇异菌 5、古水菌 3 |
 | `#minecraft:copper` | 铜块 / 切制铜 / 铜灯 / 避雷针等（各锈蚀档 + 打蜡） | 铜菌 24、岩菌 6、闪亮菌 1 |
@@ -224,6 +229,7 @@ table.air(Identifier.fromNamespaceAndPath("beyondtime", "era_1"), ...);  // 以�
 2. **伪古水菌只在 `water`**（按原文"只在水中存在"实现）。**泥巴（`mud`）本来也放了，
    现在按字面意思去掉了** —— 如果你希望湿泥、湿海绵之类也有，说一声就加回去。
 3. **末地空气留了 4 点古水菌**（"末地以前有很多水"的伏笔），要留还是归零？
-4. **`#minecraft:logs` 覆盖菌柄**（绯红/诡异菌柄）。菌柄严格说不是原木，但设定里
-   木质霉"以各种原木为食"，菌柄已经有一套绯红霉的精确条目了，所以标签只兜底其他原木。
+4. **下界的木头**：菌柄本体走 `#crimson_stems` / `#warped_stems`（排在 `#logs` 前面），
+   下界木板单独列了两条，所以下界的木头**一点古水菌都没有**。`#logs` / `#planks` 剩下的
+   部分（主世界的原木和木板）才带古水菌。
 5. **“闪亮菌所在方块的名单”** 目前只挑了 6 个亮度为 1 的方块，要不要再加？

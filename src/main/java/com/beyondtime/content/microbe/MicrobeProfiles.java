@@ -18,6 +18,7 @@ import java.util.Map;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -226,10 +227,12 @@ public final class MicrobeProfiles {
                 .add(CRIMSON_MOLD, 34).add(FIRE, 6).add(BIZARRE, 4));
         table.block(Blocks.WARPED_WART_BLOCK, table.mix()
                 .add(CRIMSON_MOLD, 26).add(BIZARRE, 8).add(FAE, 2));
-        table.block(Blocks.CRIMSON_STEM, table.mix()
-                .add(CRIMSON_MOLD, 22).add(WOOD_MOLD, 10).add(FIRE, 6));
-        table.block(Blocks.WARPED_STEM, table.mix()
-                .add(CRIMSON_MOLD, 14).add(WOOD_MOLD, 12).add(BIZARRE, 8));
+        // The stems themselves are covered by the #crimson_stems / #warped_stems tags, which are
+        // consulted before #logs so that the Nether wood never reports 古水菌.
+        table.block(Blocks.CRIMSON_PLANKS, table.mix()
+                .add(CRIMSON_MOLD, 16).add(WOOD_MOLD, 12).add(FIRE, 4));
+        table.block(Blocks.WARPED_PLANKS, table.mix()
+                .add(CRIMSON_MOLD, 10).add(WOOD_MOLD, 14).add(BIZARRE, 6));
         table.block(Blocks.CRIMSON_NYLIUM, table.mix()
                 .add(CRIMSON_MOLD, 18).add(FIRE, 8).add(STONE, 6));
         table.block(Blocks.WARPED_NYLIUM, table.mix()
@@ -249,6 +252,14 @@ public final class MicrobeProfiles {
                 .add(STONE, 30).add(BIZARRE, 6).add(COPPER, 4).add(GLIMMER, 1).add(ANCIENT_WATER, 2));
         table.tag(BlockTags.BASE_STONE_NETHER, table.mix()
                 .add(STONE, 20).add(FIRE, 16).add(BIZARRE, 5));
+
+        // Ahead of #logs on purpose: a stripped crimson stem is still Nether wood, and the Nether
+        // has no 古水菌 at all - only 火元素 crowding it out.
+        table.tag(BlockItemTags.CRIMSON_STEMS.block(), table.mix()
+                .add(CRIMSON_MOLD, 22).add(WOOD_MOLD, 10).add(FIRE, 6));
+        table.tag(BlockItemTags.WARPED_STEMS.block(), table.mix()
+                .add(CRIMSON_MOLD, 14).add(WOOD_MOLD, 12).add(BIZARRE, 8));
+
         table.tag(BlockTags.LOGS, table.mix()
                 .add(WOOD_MOLD, 34).add(ANCIENT_WATER, 6).add(BIZARRE, 5));
         table.tag(BlockTags.PLANKS, table.mix()
