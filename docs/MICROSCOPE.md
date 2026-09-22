@@ -178,21 +178,25 @@ Shapes.or(
 现在这一批占位图是脚本画的，看一眼全部图标：
 
 ```powershell
-pwsh -File tools/make-placeholder-textures.ps1   # 重新生成全部占位图（会覆盖）
+pwsh -File tools/make-placeholder-textures.ps1   # 只补上缺失的占位图（不动你画好的）
 pwsh -File tools/preview-textures.ps1            # 拼成一张对照图 docs/img/microbe-icons.png
 ```
+
+> 这个脚本**默认不会覆盖已存在的文件**；确实要重画已存在的那几张，加 `-Force`。
+> 完整的贴图替换说明见 `docs/TEXTURES.md`。
 
 都是普通 PNG（8 位 RGBA 像素图即可），不要用 JPG/WebP，也不要把图放进 `src/generated/`。
 文件名全小写、用下划线，不要用中文名。
 
 ### 4.2 模型里贴图是怎么用的（决定你要画成什么样）
 
-模型元素只写了 `"texture": "#body"`，**没有写 `uv`**，也就是说：
+模型元素只写了 `"texture": "#body"`，**没有写 `uv`**，这时游戏会拿这个 box 的 `from`/`to`
+投影到 0..16 的空间里当 uv（也就是"从整张图里取对应位置的那一小块"），
+**不是**"一个面 = 整张贴图铺满一次"。
 
-> **一个零件的一个面 = 整张贴图铺满一次。**
-
-32×32 的贴图在模型里被当作 16×16 的坐标空间使用（0..16 对应整张图），
-所以 32×32 完全没问题，只是分辨率更高、更细腻。
+32×32 的贴图仍然被当作 16×16 的坐标空间使用（0..16 对应整张图，1 uv = 2 像素），
+所以 32×32 完全没问题，只是分辨率更高、更细腻。自动 uv 的完整公式、
+以及"想每个面单独画"的两套做法，见 **[docs/TEXTURES.md](TEXTURES.md)**。
 
 实际含义：
 
@@ -200,7 +204,10 @@ pwsh -File tools/preview-textures.ps1            # 拼成一张对照图 docs/im
   它会被贴到底座、载物台、立柱、横臂的每一个面上。
 - `microscope_glass.png` 只用在镜筒上，画成"玻璃筒 / 镜片"的表面即可，可以带透明。
 - 想更精细（比如立柱正面专门画刻度、载物台专门画黑色台面），就在 JSON 里对应的 face 上
-  加 `"uv": [0, 0, 8, 8]` 之类，把一张 32×32 切成多块分别取用 —— 需要的话我给你写示例。
+  加 `"uv": [0, 0, 8, 8]` 之类，把一张 32×32 切成多块分别取用。
+  **现成的完整示例**：`tools/microscope-variants/a_desk_per_face.json`（一张图集 + 逐面 uv）
+  和 `a_desk_per_part.json`（每个零件一张图），配合 `docs/TEXTURES.md` 第 4、5 节使用。
+  另外这两个变体要用的占位贴图已经生成好了，覆盖过去就能直接跑。
 
 ### 4.3 培养皿贴图的注意点
 

@@ -31,6 +31,7 @@ M0、M1 完成，M2 进行中。
 - 内容由作者定义，开发方不自行设计设定。
 - 规则与协作方式见 [docs/DESIGN.md](docs/DESIGN.md)
 - 显微镜外形方案、贴图规格、界面坐标见 [docs/MICROSCOPE.md](docs/MICROSCOPE.md)
+- **贴图怎么改、怎么按零件/按面分别画**见 [docs/TEXTURES.md](docs/TEXTURES.md)
 - 11 种微生物的**设定原文**见 [docs/LORE_MICROBES.md](docs/LORE_MICROBES.md)
 - **采集名单与各维度分布**见 [docs/MICROBE_PROFILES.md](docs/MICROBE_PROFILES.md)
 - 设定登记表见 [docs/LORE_INTAKE.md](docs/LORE_INTAKE.md)
