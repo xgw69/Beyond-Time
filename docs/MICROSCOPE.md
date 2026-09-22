@@ -140,11 +140,12 @@ Shapes.or(
 
 ### 还可以怎么变（说一声我就做）
 
-- **载物台上放培养皿**：加一个 `has_dish` 方块状态，有皿时额外渲染一个皿的模型，
-  放进/取出时外观跟着变。这个最值得做，但要多一个模型和一条 blockstate 属性。
 - 只有底座 + 载物台 + 短镜筒（高度 8）的"便携式"。
 - 双立柱、镜筒斜伸 45° 的"老式黄铜"造型（需要给元素写 `rotation`）。
 - 底座做成 12×12、四角带脚，看起来"没铺满方块"。
+
+> **已决定不做**：载物台上不放培养皿的实体模型（作者：不需要载物台显示培养皿的功能）。
+> 培养皿在界面里的那个格子里显示就够了。
 
 ---
 
@@ -157,7 +158,29 @@ Shapes.or(
 | 显微镜机身 | **32×32** | PNG，不透明 | `src/main/resources/assets/beyondtime/textures/block/microscope.png` |
 | 镜筒玻璃 | **32×32** | PNG，可带透明 | `src/main/resources/assets/beyondtime/textures/block/microscope_glass.png` |
 | 培养皿 | **32×32** | PNG，背景必须透明 | `src/main/resources/assets/beyondtime/textures/item/petri_dish.png` |
+| 微生物图标（每种一张） | **32×32** | PNG，背景必须透明 | `src/main/resources/assets/beyondtime/textures/microbe/<id>.png` |
 | 显微镜界面背景 | **256×256** | PNG | `src/main/resources/assets/beyondtime/textures/gui/microscope.png` |
+
+微生物图标一共 12 个文件，**id 必须和代码里的 id 完全一致**：
+
+| 文件名 | 微生物 | 文件名 | 微生物 |
+|---|---|---|---|
+| `ancient_water.png` | 古水菌 | `copper.png` | 铜菌 |
+| `stone.png` | 岩菌 | `wood_mold.png` | 木质霉 |
+| `fae.png` | 仙灵 | `glimmer.png` | 闪亮菌 |
+| `fire.png` | 火元素 | `bizarre.png` | 奇异菌 |
+| `crimson_mold.png` | 绯红霉 | `false_ancient_water.png` | 伪古水菌（故意画得和古水菌一模一样） |
+| `ender.png` | 末影菌 | `unknown.png` | 兜底图标，旧存档里出现未知微生物时用 |
+
+界面里这些图标**画成 16×16**（32×32 缩一半），因为一屏要放下 12 个条目。
+所以细节别画太碎，缩到一半还能认出来就行。
+
+现在这一批占位图是脚本画的，看一眼全部图标：
+
+```powershell
+pwsh -File tools/make-placeholder-textures.ps1   # 重新生成全部占位图（会覆盖）
+pwsh -File tools/preview-textures.ps1            # 拼成一张对照图 docs/img/microbe-icons.png
+```
 
 都是普通 PNG（8 位 RGBA 像素图即可），不要用 JPG/WebP，也不要把图放进 `src/generated/`。
 文件名全小写、用下划线，不要用中文名。
@@ -190,20 +213,30 @@ Shapes.or(
 
 ### 4.4 界面背景的固定坐标（不要自己挪）
 
-界面背景是 **256×256**（和所有原版容器界面一致），可见面板画在**左上角的 176×166**里。
-代码里的槽位坐标是定死的，画图时按这张表对位：
+界面**面板是 256×232**（比箱子宽、比箱子高，因为要放下整张微生物报告），
+背景 PNG 仍然是标准的 **256×256**，可见面板画在左上角 256×232 里。
+代码里的坐标是定死的，画图时按这张表对位：
 
-| 界面元素 | 面板内坐标（左上角为 0,0） |
-|---|---|
-| 标题文字"显微镜" | `8, 6` |
-| 培养皿槽位 | `26, 21`（16×16） |
-| 样本报告框（暂定） | `48, 18`，大小 120×48 |
-| "物品栏"文字 | `8, 72` |
-| 玩家背包 3 行 | `8, 84` 起，每格 18 像素 |
-| 快捷栏 | `8, 142`，每格 18 像素 |
+| 界面元素 | 面板内坐标（左上角为 0,0） | 大小 |
+|---|---|---|
+| 标题文字"显微镜" | `8, 6` | — |
+| 载物台凹槽（放培养皿的区域） | `6, 18` | 110×28 |
+| 培养皿槽位（16×16） | `10, 22` | 18×18 |
+| 来源 / 菌数两行文字 | `34, 24` 和 `34, 36` | — |
+| 分隔线 | `8, 48` 到 `248, 48` | — |
+| 微生物报告底框 | `6, 50` | 244×98 |
+| 报告标题"微生物" | `10, 52` | — |
+| 微生物列表第一个格子 | `10, 66` | 3 列 × 4 行 |
+| 列表格子间距 | 列宽 `78`，行高 `20` | 图标 16×16 |
+| "物品栏"文字 | `47, 138` | — |
+| 玩家背包 3 行 | `47, 150` 起，每格 18 像素 | — |
+| 快捷栏 | `47, 208`，每格 18 像素 | — |
 
-（那 176×166 以外的地方留透明没用，游戏不会绘制；但整张图必须是 256×256，
+（那 256×232 以外的地方留透明没用，游戏不会绘制；但整张图必须是 256×256，
 否则会被拉伸、所有槽位都会错位 —— 这就是之前界面错位的原因。）
+
+列表的排列顺序是**先竖后横**：第 1 格是左上角，往下排 4 格，再排到第 2 列。
+一屏放得下 12 条，标题上方的 `来源：` / `菌数：` 两行是这一皿的出处和总菌数。
 
 ---
 
@@ -215,7 +248,18 @@ Shapes.or(
 | 方块属性（`noOcclusion` 等） | `src/main/java/com/beyondtime/registry/BTBlocks.java` |
 | 模型（手写） | `src/main/resources/assets/beyondtime/models/block/microscope.json` |
 | blockstate（datagen 生成，4 个朝向） | `src/generated/resources/assets/beyondtime/blockstates/microscope.json` |
-| 界面背景绘制 / 报告框 | `src/main/java/com/beyondtime/client/screen/MicroscopeScreen.java` |
+| 界面绘制 / 微生物列表 | `src/main/java/com/beyondtime/client/screen/MicroscopeScreen.java` |
 | 槽位坐标 | `src/main/java/com/beyondtime/content/menu/MicroscopeMenu.java` |
 | 占位贴图生成脚本 | `tools/make-placeholder-textures.ps1` |
+| 微生物图标对照图脚本 | `tools/preview-textures.ps1` |
 | 备选外形 | `tools/microscope-variants/` |
+
+## 6. 培养皿的采集规则（界面之外的另一半）
+
+手上拿**干净**的培养皿时：对着方块右键 → 采集那个方块（名单见 `docs/MICROBE_PROFILES.md`）；
+对着名单外的方块、或者对着空气右键 → 采集**当前维度的空气**。
+**培养皿优先采集，不需要潜行**，所以拿培养皿点箱子是"采样"而不是"开箱子"；只有显微镜是例外
+（点显微镜 = 把皿放进去）。
+
+采集到的皿会带上"从哪采的 + 有哪些菌、各多少"，鼠标移到物品上直接能看到来源和菌数；
+具体的菌种和占比要**放进显微镜**才看得到。

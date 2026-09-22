@@ -19,14 +19,20 @@ forms of living creatures, and machines that travel to the past of each dimensio
 
 ## 当前状态
 
-M0 完成，M1 进行中。
+M0、M1 完成，M2 进行中。
 
 - M1 已有：显微镜（非完整方块、四个朝向、可放入/取出培养皿）、培养皿（采集/清洗/采集后不可堆叠）、
-  显微镜观察界面雏形、配方与战利品数据生成。**等作者测试与挑选外形。**
+  配方与战利品数据生成。外形已选定**方案 A（台面式）**。
+- M2 已有：11 种微生物的数据、**采集名单**（精确方块 + 原版标签 + 主世界/下界/末地三个维度的空气）、
+  样本数据组件（来源 + 各菌种读数 + 总菌数）、**显微镜报告界面**（每格：32×32 图标 + 名称 + 占比，
+  另有来源与菌数）。
+  **等作者测试，并审阅 `docs/MICROBE_PROFILES.md` 的名单与比例。**
 
 - 内容由作者定义，开发方不自行设计设定。
 - 规则与协作方式见 [docs/DESIGN.md](docs/DESIGN.md)
 - 显微镜外形方案、贴图规格、界面坐标见 [docs/MICROSCOPE.md](docs/MICROSCOPE.md)
+- 11 种微生物的**设定原文**见 [docs/LORE_MICROBES.md](docs/LORE_MICROBES.md)
+- **采集名单与各维度分布**见 [docs/MICROBE_PROFILES.md](docs/MICROBE_PROFILES.md)
 - 设定登记表见 [docs/LORE_INTAKE.md](docs/LORE_INTAKE.md)
 - 配方写法标准见 [docs/RECIPE_SPEC.md](docs/RECIPE_SPEC.md)（配方登记在 [docs/RECIPES.md](docs/RECIPES.md)）
 - 运行/测试方式见 [docs/DEV_LOOP.md](docs/DEV_LOOP.md)

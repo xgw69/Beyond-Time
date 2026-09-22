@@ -21,10 +21,22 @@ import net.minecraft.world.item.ItemStack;
 public class MicroscopeMenu extends AbstractContainerMenu {
     public static final int DISH_SLOT = MicroscopeBlockEntity.DISH_SLOT;
 
-    public static final int DISH_SLOT_X = 26;
-    public static final int DISH_SLOT_Y = 21;
-    public static final int INVENTORY_X = 8;
-    public static final int INVENTORY_Y = 84;
+    /**
+     * The panel is wider and taller than a chest, because it has to hold the whole microbe report.
+     *
+     * <p>It is still no larger than {@link #BACKGROUND_TEXTURE_SIZE} on either axis, so the
+     * background PNG can stay a plain 256x256 with the panel in its top left corner.
+     */
+    public static final int PANEL_WIDTH = 256;
+    public static final int PANEL_HEIGHT = 232;
+
+    /** The dish slot, on the "stage" in the top left of the panel. */
+    public static final int DISH_SLOT_X = 10;
+    public static final int DISH_SLOT_Y = 22;
+
+    /** The player inventory, centred under the report area. */
+    public static final int INVENTORY_X = (PANEL_WIDTH - 9 * 18) / 2;
+    public static final int INVENTORY_Y = 150;
 
     /**
      * Size of the background texture drawn by the screen.
