@@ -37,6 +37,10 @@
 | `block/microscope_glass.png` | 32×32 | —— | **旧版单贴图**，同上 |
 | `block/microscope_atlas.png` | 32×32 | —— | 只在"每个面单独画"那套里用，**现在没启用** |
 | `item/petri_dish.png` | 32×32 | 培养皿物品 | 四角必须透明 |
+| `item/sampler.png` | 32×32 | 采集器物品 | 本轮代画 |
+| `item/sealed_tissue_sample.png` | 32×32 | 密封组织样本物品 | 本轮代画 |
+| `block/basic_analyzer_up/down/north/south/west/east.png` | 32×32 | 基础分析仪六个面 | 完整方块按面拆（R10） |
+| `gui/basic_analyzer.png` | **256×256** | 基础分析仪界面背景 | 面板 200×240，坐标见 `docs/TISSUE.md` 4.3 |
 | `microbe/<id>.png` | 32×32 | 显微镜界面里的菌种图标 | 界面里画成 16×16，共 12 张 |
 | `gui/microscope.png` | **256×256** | 显微镜界面背景 | 可见面板 256×248，坐标表见 `docs/MICROSCOPE.md` 4.4 |
 
@@ -368,4 +372,30 @@ src/main/resources/assets/beyondtime/models/block/<方块名>.json      只有�
 3. 在 `BTModelProvider.java` 里加 blockstate 的 datagen
 4. 完整方块一般还要加 `BlockItem` 和 `items/<名字>.json` 的 datagen
 5. `.\gradlew.bat runData` → `tools\dev-client.bat` 里看效果
+
+### 10.5 已经照着做的完整示例：基础分析仪
+
+`basic_analyzer` 是 R10 的完整方块示例：六张 32×32 面贴图、一个六面 `cullface` 的手写模型、
+`BTModelProvider` 里带朝向的 blockstate、以及一张 256×256 的界面背景。
+
+想重画或微调，直接改下面这些文件：
+
+| 文件 | 内容 |
+|---|---|
+| `textures/block/basic_analyzer_up.png` | 顶部黄铜进样口 |
+| `textures/block/basic_analyzer_down.png` | 底部加强筋 |
+| `textures/block/basic_analyzer_north.png` | 正面观察窗与样本槽 |
+| `textures/block/basic_analyzer_south.png` | 背面散热片与电源口 |
+| `textures/block/basic_analyzer_west.png` / `_east.png` | 两侧导轨与散热窗 |
+| `textures/gui/basic_analyzer.png` | 256×256 界面背景（面板 200×240） |
+| `tools/make_machine_textures.py` | 上面这些图与预览图的生成脚本 |
+
+重新生成：
+
+```powershell
+python tools/make_machine_textures.py
+```
+
+脚本只覆盖它自己生成的文件，并且同时输出 `docs/img/machine-textures.png` 和
+`docs/img/basic-analyzer-gui.png` 两张预览图。作者可以直接覆盖任意一张 PNG，不用改脚本。
 6. 逐张替换 `<方块名>_*.png`

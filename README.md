@@ -19,17 +19,21 @@ forms of living creatures, and machines that travel to the past of each dimensio
 
 ## 当前状态
 
-M0、M1 完成，M2 进行中。
+M0、M1、M2 完成；M3 第一阶段（知识系统 + 采集器 + 基础生物分析仪）已完成，等作者验收。
 
 - M1 已有：显微镜（非完整方块、四个朝向、可放入/取出培养皿）、培养皿（采集/清洗/采集后不可堆叠）、
   配方与战利品数据生成。外形已选定**方案 A（台面式）**。
 - M2 已有：11 种微生物的数据、**采集名单**（精确方块 + 原版标签 + 主世界/下界/末地三个维度的空气）、
   样本数据组件（来源 + 各菌种读数 + 总菌数）、**显微镜报告界面**（每格：32×32 图标 + 名称 + 占比，
-  另有来源与菌数）。
-  **等作者测试，并审阅 `docs/MICROBE_PROFILES.md` 的名单与比例。**
+  另有来源与菌数）。名单与比例仍在 `docs/MICROBE_PROFILES.md`，作者可随时改。
+- M3 已有：**知识系统**（每玩家 attachment、observe/grant、死亡复制、登录同步）、
+  **可采集实体标签**、**采集器 T-01**、**密封组织样本 T-02**、**基础生物分析仪 M-01**
+  （部分报告、关闭即消失）、配方 R-04/R-05、32×32 贴图与六面方块模型。
+  **等作者按 `docs/TISSUE.md` 第 9 节验收。**
 
-- 内容由作者定义，开发方不自行设计设定。
+- 设定与内容以作者为准；作者授权时开发方可先代拟未完整设计的特性/配方/贴图，并标 `[开发方代拟]`。
 - 规则与协作方式见 [docs/DESIGN.md](docs/DESIGN.md)
+- **组织采样与基础分析仪的完整设计、贴图规格、界面坐标、验收清单**见 [docs/TISSUE.md](docs/TISSUE.md)
 - 显微镜外形方案、贴图规格、界面坐标见 [docs/MICROSCOPE.md](docs/MICROSCOPE.md)
 - **贴图怎么改、怎么按零件/按面分别画**见 [docs/TEXTURES.md](docs/TEXTURES.md)
 - 11 种微生物的**设定原文**见 [docs/LORE_MICROBES.md](docs/LORE_MICROBES.md)
@@ -63,9 +67,10 @@ tools/                         调试用快捷脚本
 
 ## 素材规格
 
-物品/方块贴图统一 **32×32**，容器界面背景统一 **256×256**（可见面板画在左上角 176×166 里）。
-路径、UV 规则与固定坐标见 [docs/DESIGN.md](docs/DESIGN.md) 第 5 节与
-[docs/MICROSCOPE.md](docs/MICROSCOPE.md) 第 4 节。
+物品/方块贴图统一 **32×32**，容器界面背景统一 **256×256**（可见面板画在左上角，尺寸可自定义：
+显微镜 256×248，基础分析仪 200×240）。完整方块按六个面各一张贴图，非完整方块按零件拆，
+规则见 [docs/TEXTURES.md](docs/TEXTURES.md)；固定坐标见
+[docs/MICROSCOPE.md](docs/MICROSCOPE.md) 与 [docs/TISSUE.md](docs/TISSUE.md)。
 
 ## 许可证
 
