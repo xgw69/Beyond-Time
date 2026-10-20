@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import com.beyondtime.content.microbe.MicrobeSample;
+import com.beyondtime.content.tissue.TissueSample;
 
 /**
  * Data components added by Beyond-Time.
@@ -30,6 +31,18 @@ public final class BTDataComponents {
             BTRegistries.DATA_COMPONENTS.registerComponentType(
                     "contained_dish",
                     builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC));
+
+    /**
+     * The tissue inside a sealed tissue sample.
+     *
+     * <p>One component is shared by the sampler, both analyzers, the bio-editor, the culture vat and
+     * the cloning pod, as {@code docs/MACHINES.md} section 0.2 requires. Present means the item is a
+     * sample; a sample never stacks and never turns into food or fuel.
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<TissueSample>> TISSUE =
+            BTRegistries.DATA_COMPONENTS.registerComponentType(
+                    "tissue",
+                    builder -> builder.persistent(TissueSample.CODEC).networkSynchronized(TissueSample.STREAM_CODEC));
 
     private BTDataComponents() {}
 

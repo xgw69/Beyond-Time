@@ -1,5 +1,6 @@
 package com.beyondtime.registry;
 
+import com.beyondtime.content.block.entity.BasicAnalyzerBlockEntity;
 import com.beyondtime.content.block.entity.MicroscopeBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -11,6 +12,11 @@ public final class BTBlockEntities {
             BTRegistries.BLOCK_ENTITY_TYPES.register(
                     "microscope",
                     () -> new BlockEntityType<>(MicroscopeBlockEntity::new, BTBlocks.MICROSCOPE.get()));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BasicAnalyzerBlockEntity>> BASIC_ANALYZER =
+            BTRegistries.BLOCK_ENTITY_TYPES.register(
+                    "basic_analyzer",
+                    () -> new BlockEntityType<>(BasicAnalyzerBlockEntity::new, BTBlocks.BASIC_ANALYZER.get()));
 
     private BTBlockEntities() {}
 

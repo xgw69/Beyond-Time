@@ -27,11 +27,12 @@ public class BTBlockLoot extends BlockLootSubProvider {
     @Override
     protected void generate() {
         this.add(BTBlocks.MICROSCOPE.get(), this::createMicroscopeDrop);
+        this.dropSelf(BTBlocks.BASIC_ANALYZER.get());
     }
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return List.of(BTBlocks.MICROSCOPE.get());
+        return List.of(BTBlocks.MICROSCOPE.get(), BTBlocks.BASIC_ANALYZER.get());
     }
 
     /**

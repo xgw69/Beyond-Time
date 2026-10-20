@@ -56,6 +56,34 @@ public class BTRecipeProvider extends RecipeProvider {
                         Ingredient.of(Items.GLASS), RecipeCategory.MISC, BTItems.PETRI_DISH.get(), 2)
                 .unlockedBy(getHasName(Items.GLASS), this.has(Items.GLASS))
                 .save(this.output, id("petri_dish_from_glass_stonecutting"));
+
+        // R-04 sampler, shapeless. Three glass bottles are the confirmed part; the two iron ingots
+        // make the coring mechanism and the stick is the plunger. The recipe is deliberately cheap:
+        // the sampler is the first tool of the progression and breaks after three samples.
+        this.shapeless(RecipeCategory.TOOLS, BTItems.SAMPLER.get())
+                .requires(Items.GLASS_BOTTLE, 3)
+                .requires(Items.IRON_INGOT, 2)
+                .requires(Items.STICK)
+                .unlockedBy(getHasName(Items.GLASS_BOTTLE), this.has(Items.GLASS_BOTTLE))
+                .save(this.output);
+
+        // R-05 basic bio-analyzer, 3x3. An iron frame around a glass window, a copper core and a
+        // redstone circuit underneath. No amethyst: the microscope already spends that, and this is
+        // meant to be buildable right after the first few microscope samples.
+        //   I G I
+        //   I C I
+        //   . R .
+        this.shaped(RecipeCategory.MISC, BTItems.BASIC_ANALYZER.get())
+                .pattern("IGI")
+                .pattern("ICI")
+                .pattern(" R ")
+                .define('I', Items.IRON_INGOT)
+                .define('G', Items.GLASS)
+                .define('C', Items.COPPER_INGOT)
+                .define('R', Items.REDSTONE)
+                .unlockedBy(getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
+                .unlockedBy(getHasName(Items.COPPER_INGOT), this.has(Items.COPPER_INGOT))
+                .save(this.output);
     }
 
     private static ResourceKey<Recipe<?>> id(String path) {

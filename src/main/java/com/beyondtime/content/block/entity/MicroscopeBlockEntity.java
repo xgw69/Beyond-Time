@@ -1,6 +1,12 @@
 package com.beyondtime.content.block.entity;
 
+import com.beyondtime.content.item.PetriDishItem;
+import com.beyondtime.content.knowledge.KnowledgeEvents;
+import com.beyondtime.content.knowledge.KnowledgeNodes;
 import com.beyondtime.content.menu.MicroscopeMenu;
+import com.beyondtime.content.microbe.Microbe;
+import com.beyondtime.content.microbe.MicrobeSample;
+import com.beyondtime.content.microbe.Microbes;
 import com.beyondtime.registry.BTBlockEntities;
 import com.beyondtime.registry.BTDataComponents;
 import com.beyondtime.registry.BTItems;
@@ -119,6 +125,19 @@ public class MicroscopeBlockEntity extends BlockEntity implements Container, Men
 
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        // Opening the screen is the moment the player actually looks down the tube. Grant knowledge
+        // for what the report shows, not for what the dish originally collected: 伪古水菌 is folded
+        // into 古水菌 by MicrobeSample#report(), so it is never "observed" as itself.
+        MicrobeSample sample = PetriDishItem.sample(this.dish);
+        if (sample != null) {
+            for (MicrobeSample.Reading reading : sample.report()) {
+                Microbe microbe = Microbes.byId(reading.microbe());
+                if (microbe != null) {
+                    KnowledgeEvents.observe(player, KnowledgeNodes.microbe(microbe.id()));
+                }
+            }
+        }
+
         return new MicroscopeMenu(containerId, inventory, this);
     }
 

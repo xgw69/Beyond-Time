@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "beyondtime:block/basic_analyzer_north",
+    "up": "beyondtime:block/basic_analyzer_up",
+    "down": "beyondtime:block/basic_analyzer_down",
+    "north": "beyondtime:block/basic_analyzer_north",
+    "south": "beyondtime:block/basic_analyzer_south",
+    "west": "beyondtime:block/basic_analyzer_west",
+    "east": "beyondtime:block/basic_analyzer_east"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up": { "texture": "#up", "cullface": "up" },
+        "down": { "texture": "#down", "cullface": "down" },
+        "north": { "texture": "#north", "cullface": "north" },
+        "south": { "texture": "#south", "cullface": "south" },
+        "west": { "texture": "#west", "cullface": "west" },
+        "east": { "texture": "#east", "cullface": "east" }
+      }
+    }
+  ]
+}

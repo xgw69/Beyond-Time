@@ -1,5 +1,6 @@
 package com.beyondtime;
 
+import com.beyondtime.client.screen.BasicAnalyzerScreen;
 import com.beyondtime.client.screen.MicroscopeScreen;
 import com.beyondtime.registry.BTMenus;
 
@@ -26,5 +27,6 @@ public class BeyondTimeClient {
     @SubscribeEvent
     static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
         event.register(BTMenus.MICROSCOPE.get(), MicroscopeScreen::new);
+        event.register(BTMenus.BASIC_ANALYZER.get(), BasicAnalyzerScreen::new);
     }
 }

@@ -1,5 +1,6 @@
 package com.beyondtime.registry;
 
+import com.beyondtime.content.menu.BasicAnalyzerMenu;
 import com.beyondtime.content.menu.MicroscopeMenu;
 
 import net.minecraft.world.flag.FeatureFlags;
@@ -10,6 +11,10 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public final class BTMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<MicroscopeMenu>> MICROSCOPE = BTRegistries.MENU_TYPES.register(
             "microscope", () -> new MenuType<>(MicroscopeMenu::createClient, FeatureFlags.VANILLA_SET));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<BasicAnalyzerMenu>> BASIC_ANALYZER =
+            BTRegistries.MENU_TYPES.register(
+                    "basic_analyzer", () -> new MenuType<>(BasicAnalyzerMenu::createClient, FeatureFlags.VANILLA_SET));
 
     private BTMenus() {}
 

@@ -14,6 +14,9 @@ public final class BTCreativeTab {
                     .displayItems((parameters, output) -> {
                         output.accept(BTItems.MICROSCOPE.get());
                         output.accept(BTItems.PETRI_DISH.get());
+                        output.accept(BTItems.SAMPLER.get());
+                        output.accept(BTItems.SEALED_TISSUE_SAMPLE.get());
+                        output.accept(BTItems.BASIC_ANALYZER.get());
                     })
                     .build());
 

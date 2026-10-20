@@ -30,6 +30,10 @@ public class BTModelProvider extends ModelProvider {
     public static final Identifier MICROSCOPE_MODEL =
             Identifier.fromNamespaceAndPath(BeyondTime.MODID, "block/microscope");
 
+    /** The hand-written six-face basic-analyzer model. */
+    public static final Identifier BASIC_ANALYZER_MODEL =
+            Identifier.fromNamespaceAndPath(BeyondTime.MODID, "block/basic_analyzer");
+
     public BTModelProvider(PackOutput output) {
         super(output, BeyondTime.MODID);
     }
@@ -40,7 +44,17 @@ public class BTModelProvider extends ModelProvider {
         blockModels.blockStateOutput.accept(MultiVariantGenerator
                 .dispatch(BTBlocks.MICROSCOPE.get(), BlockModelGenerators.plainVariant(MICROSCOPE_MODEL))
                 .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.registerSimpleItemModel(BTBlocks.MICROSCOPE.get(), MICROSCOPE_MODEL);
+
+        // The basic analyzer is a full cube: one hand-written model with six separate face textures,
+        // rotated to face the player. No uv tricks, no single-texture fallback (rule R10).
+        blockModels.blockStateOutput.accept(MultiVariantGenerator
+                .dispatch(BTBlocks.BASIC_ANALYZER.get(), BlockModelGenerators.plainVariant(BASIC_ANALYZER_MODEL))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.registerSimpleItemModel(BTBlocks.BASIC_ANALYZER.get(), BASIC_ANALYZER_MODEL);
 
         itemModels.generateFlatItem(BTItems.PETRI_DISH.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(BTItems.SAMPLER.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(BTItems.SEALED_TISSUE_SAMPLE.get(), ModelTemplates.FLAT_ITEM);
     }
 }
